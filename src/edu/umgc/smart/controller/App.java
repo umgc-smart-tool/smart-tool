@@ -7,8 +7,11 @@ public class App {
   private View view;
   private DataAccessor dataAccessor;
 
-  public App(View view, DataAccessor dataAccessor) {
+  public void setView(View view) {
     this.view = view;
+  }
+
+  public void setDataAccessor(DataAccessor dataAccessor) {
     this.dataAccessor = dataAccessor;
   }
 
