@@ -5,14 +5,10 @@ import edu.umgc.smart.view.View;
 
 public class App {
   private View view;
-  private DataAccessor dataAccessor;
 
   public void setView(View view) {
     this.view = view;
-  }
-
-  public void setDataAccessor(DataAccessor dataAccessor) {
-    this.dataAccessor = dataAccessor;
+    view.setDataAccessor(dataAccessor);
   }
 
   public void start() {

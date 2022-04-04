@@ -1,5 +1,13 @@
 package edu.umgc.smart.view;
 
-public interface View {
-  public void start();
+import edu.umgc.smart.model.DataAccessor;
+
+public abstract class View {
+
+  protected DataAccessor dataAccessor;
+
+  public void setDataAccessor(DataAccessor dataAccessor) {
+    this.dataAccessor = dataAccessor;
+  }
+  public abstract void start();
 }
