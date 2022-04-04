@@ -13,10 +13,12 @@ import edu.umgc.smart.view.*;
 public class Main {
   private static View view;
   private static DataAccessor dataAccessor;
+  private static App smartApp;
 
   public static void main(String... args) {
     initializeUI(args);
     initializeDataAccessor();
+    initializeProgram();
     startProgram();
   }
 
@@ -32,8 +34,11 @@ public class Main {
     dataAccessor = new MemoryDataAccessor();
   }
 
+  private static void initializeProgram() {
+    smartApp = new App(view, dataAccessor);
+  }
+
   private static void startProgram() {
-    App smartApp = new App(view, dataAccessor);
     smartApp.start();
   }
 }
