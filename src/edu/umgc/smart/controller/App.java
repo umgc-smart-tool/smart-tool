@@ -6,7 +6,7 @@ import edu.umgc.smart.view.View;
 public class App {
   private View view;
 
-  public App(View view, DataAccessor dataAccessor) {
+  public void setView(View view) {
     this.view = view;
     view.setDataAccessor(dataAccessor);
   }
