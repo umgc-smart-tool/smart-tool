@@ -14,13 +14,14 @@ public class ConsoleView extends View {
 
   public void start() {
     System.out.println("Hello World!");
-    System.out.println("Press 'Enter' to view all records.");
-    scanner.nextLine();
+    System.out.println("\nCurrent Records:");
     printRecords();
+    scanner.nextLine();
   }
 
   private void printRecords() {
     List<Record> records = this.dataAccessor.getAll();
+    System.out.println(Record.getHeaders());
     records.forEach((r) -> {
       System.out.println(r);
     });
