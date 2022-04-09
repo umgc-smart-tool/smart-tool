@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import edu.umgc.smart.model.RecordType;
+
 /**
  * File: SwingView.java
  * Coder: Joshua Longo
@@ -34,7 +36,6 @@ public class SwingView extends View {
   //Some global stuff for the GUI windows
   final Dimension STANDARD_WINDOW_SIZE = new Dimension(750, 500);
   enum ViewType {VIEW, CREATE} //Types of views for the viewRecordWindow() window
-  enum RecordType {REPORT, LETTER, MEMO, PRESENTATION, TECHNICAL} //Types of records in database
   String[] fieldNames = {"Reference Number", "Title", "Record Type", "Author", "Date", "Category", "Summary"};
 
   /**
