@@ -320,7 +320,7 @@ public class SwingView extends View {
 
     // ---------- Set editable fields based on the ViewType ----------
     switch (viewType) {
-      case CREATE -> { //When creating/modifying, all fields but date are editable
+      case CREATE: //When creating/modifying, all fields but date are editable
         for (int i = 0; i < fieldNames.length; i++) {
           textFields[i].setEditable(true);
           textFields[i].setBackground(Color.white);
@@ -328,18 +328,17 @@ public class SwingView extends View {
         textFields[4].setEditable(false); //Date text field.
         textFields[4].setBackground(Color.LIGHT_GRAY);
         viewRecordFrame.setTitle("SMART Tool - Create / Modify Record");
-      }
-      case VIEW -> { //When viewing, no fields are editable
+        break;
+      case VIEW:  //When viewing, no fields are editable
         for (int i = 0; i < fieldNames.length; i++) {
           textFields[i].setEditable(false);
           textFields[i].setBackground(Color.LIGHT_GRAY);
         }
         viewRecordFrame.setTitle("SMART Tool - View Record");
-      }
-      default ->{
+        break;
+      default:
         //TODO: Raise custom exception?
         System.out.println("Error");
-      }
     }//End switch(viewType)
 
     // ---------- Setup and show viewRecordFrame ----------
