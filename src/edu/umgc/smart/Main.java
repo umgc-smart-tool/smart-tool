@@ -1,8 +1,8 @@
 package edu.umgc.smart;
 
 import edu.umgc.smart.controller.App;
-import edu.umgc.smart.model.DataAccessor;
-import edu.umgc.smart.model.MemoryDataAccessor;
+import edu.umgc.smart.data.DataAccessor;
+import edu.umgc.smart.data.MemoryDataAccessor;
 import edu.umgc.smart.view.*;
 
 /**
