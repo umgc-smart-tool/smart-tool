@@ -1,6 +1,6 @@
 package edu.umgc.smart.controller;
 
-import edu.umgc.smart.model.DataAccessor;
+import edu.umgc.smart.data.DataAccessor;
 import edu.umgc.smart.view.View;
 
 public class App {

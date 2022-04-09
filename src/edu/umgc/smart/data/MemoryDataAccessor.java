@@ -1,8 +1,10 @@
-package edu.umgc.smart.model;
+package edu.umgc.smart.data;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.umgc.smart.model.Record;
 
 public class MemoryDataAccessor implements DataAccessor {
   private List<Record> records = new ArrayList<>();

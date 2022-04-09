@@ -1,6 +1,6 @@
 package edu.umgc.smart.view;
 
-import edu.umgc.smart.model.DataAccessor;
+import edu.umgc.smart.data.DataAccessor;
 
 public abstract class View {
 

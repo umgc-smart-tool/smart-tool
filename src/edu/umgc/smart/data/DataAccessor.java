@@ -1,6 +1,8 @@
-package edu.umgc.smart.model;
+package edu.umgc.smart.data;
 
 import java.util.List;
+
+import edu.umgc.smart.model.Record;
 
 public interface DataAccessor {
   public Record get(int id);
