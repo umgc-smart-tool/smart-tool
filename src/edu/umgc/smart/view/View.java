@@ -9,5 +9,6 @@ public abstract class View {
   public void setDataAccessor(DataAccessor dataAccessor) {
     this.dataAccessor = dataAccessor;
   }
+
   public abstract void start();
 }
