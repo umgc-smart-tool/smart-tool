@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import edu.umgc.smart.model.RecordType;
@@ -372,6 +373,6 @@ public class SwingView extends View {
   }// End viewRecordWindow() method
 
   public void start() {
-    mainWindow(new Point());
+    SwingUtilities.invokeLater(() -> mainWindow(new Point()));
   }// End start() method
 }// End SwingView class
