@@ -7,6 +7,10 @@ import java.sql.Date;
  */
 public class Record {
 
+  /**
+   *
+   */
+  private static final String HEADERS = "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
   private String referenceNumber;
   private String title;
   private String documentType;
@@ -18,7 +22,7 @@ public class Record {
   private String location;
 
   public static String getHeaders() {
-    return "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
+    return HEADERS;
   }
 
   public String getReferenceNumber() {
