@@ -1,7 +1,7 @@
 package edu.umgc.smart.app;
 
 import edu.umgc.smart.data.DataAccessor;
-import edu.umgc.smart.data.MemoryDataAccessor;
+import edu.umgc.smart.data.CsvDataAccessor;
 import edu.umgc.smart.view.*;
 
 public class App {
@@ -32,7 +32,7 @@ public class App {
   }
 
   private static DataAccessor initializeDataAccessor() {
-    return new MemoryDataAccessor();
+    return new CsvDataAccessor();
   }
 
 }
