@@ -24,13 +24,19 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public Record get(int id) {
-    return this.records.get(id);
+  public Record get(String referenceNumber) {
+    for (int i = 0; i < records.size(); i++) {
+      Record r = records.get(i);
+      if (r.getReferenceNumber().equals(referenceNumber)) {
+        return r;
+      }
+    }
+    return null;
   }
 
   @Override
-  public List<Record> getAll() {
-    return this.records;
+  public Record[] getAll() {
+    return this.records.toArray(new Record[0]);
   }
 
   @Override
@@ -39,14 +45,20 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public void update(int id, Record r) {
-    Record temp = this.get(id);
-    this.records.remove(temp);
-    records.add(id, r);
+  public void update(String referenceNumber, Record r) {
+    Record temp = this.get(referenceNumber);
+    if (temp != null) {
+      this.records.remove(temp);
+    }
+    records.add(r);
   }
 
   @Override
   public void delete(Record r) {
-    this.records.remove(r);
+    try {
+      this.records.remove(r);
+    } catch (Exception e) {
+      // If record doesn't already exist, don't delete anything
+    }
   }
 }

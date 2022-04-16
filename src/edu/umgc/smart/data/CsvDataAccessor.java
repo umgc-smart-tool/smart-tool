@@ -49,18 +49,18 @@ public class CsvDataAccessor implements DataAccessor {
 	} // end createRecord()
 
 	@Override
-	public Record get(int id) {
+	public Record get(String referenceNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Record> getAll() {
-		return records;
+	public Record[] getAll() {
+		return records.toArray(new Record[0]);
 	}
 
 	@Override
-	public void save(Record record) {
+	public void save(Record r) {
 		// Upon file close, saves the new Record info into the CSV file (File f)
 		File f = new File("Records.csv");
 		try {
@@ -77,7 +77,7 @@ public class CsvDataAccessor implements DataAccessor {
 	}
 
 	@Override
-	public void update(int id, Record record) {
+	public void update(String referenceNumber, Record r) {
 		// TODO Auto-generated method stub
 
 	}

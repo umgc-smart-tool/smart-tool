@@ -1,17 +1,15 @@
 package edu.umgc.smart.data;
 
-import java.util.List;
-
 import edu.umgc.smart.model.Record;
 
 public interface DataAccessor {
-  public Record get(int id);
+  public Record get(String referenceNumber);
 
-  public List<Record> getAll();
+  public Record[] getAll();
 
   public void save(Record r);
 
-  public void update(int id, Record r);
+  public void update(String referenceNumber, Record r);
 
   public void delete(Record t);
 }

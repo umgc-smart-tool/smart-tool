@@ -23,7 +23,7 @@ public class ConsoleView extends View {
   }
 
   private String getFormattedRecords() {
-    List<Record> records = this.dataAccessor.getAll();
+    List<Record> records = List.of(this.dataAccessor.getAll());
     StringBuilder sb = new StringBuilder();
     sb.append(Record.getHeaders());
     sb.append('\n');
