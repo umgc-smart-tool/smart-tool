@@ -31,14 +31,12 @@ public class CsvDataAccessor implements DataAccessor {
 	public void loadFile() {
 		String line = "";
 		String delim = ",";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("Records.csv"));
+		try (BufferedReader br = new BufferedReader(new FileReader("Records.csv"))) {
 			while ((line = br.readLine()) != null) {
 				String[] employee = line.split(delim);
 				// Calls createRecord function and adds the new Record to the records ArrayList
 				records.add(createRecord(employee));
 			} // end while
-			br.close();
 		} // end try
 		catch (IOException e) {
 			e.printStackTrace();
