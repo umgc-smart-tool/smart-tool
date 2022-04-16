@@ -13,13 +13,31 @@ public class Record {
   private static final String HEADERS = "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
   private String referenceNumber;
   private String title;
-  private String documentType;
+  private RecordType documentType;
   private String authorLastName;
   private String authorFirstName;
   private Date date;
   private String category;
   private String summary;
   private String location;
+
+  public Record() {
+
+  }
+
+  public Record(String referenceNumber, String title, String documentType, String authorLastName,
+      String authorFirstName, String date,
+      String category, String summary, String location) {
+    this.referenceNumber = referenceNumber;
+    this.title = title;
+    this.documentType = RecordType.valueOf(documentType);
+    this.authorLastName = authorLastName;
+    this.authorFirstName = authorFirstName;
+    this.date = Date.valueOf(date);
+    this.category = category;
+    this.summary = summary;
+    this.location = location;
+  }
 
   public static String getHeaders() {
     return HEADERS;
@@ -41,12 +59,16 @@ public class Record {
     this.title = title;
   }
 
-  public String getDocumentType() {
+  public RecordType getDocumentType() {
     return documentType;
   }
 
-  public void setDocumentType(String documentType) {
+  public void setDocumentType(RecordType documentType) {
     this.documentType = documentType;
+  }
+
+  public void setDocumentType(String documentType) {
+    this.documentType = RecordType.valueOf(documentType);
   }
 
   public String getAuthorLastName() {
@@ -71,6 +93,10 @@ public class Record {
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  public void setDate(String date) {
+    this.date = Date.valueOf(date);
   }
 
   public String getCategory() {
