@@ -94,15 +94,15 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getAuthorFirstName() == searchTerm ||
-					i.getAuthorLastName() == searchTerm ||
-					i.getCategory() == searchTerm ||
-					i.getDate() == searchTerm ||
-					i.getDocumentType() == searchTerm ||
-					i.getLocation() == searchTerm ||
-					i.getReferenceNumber() == searchTerm ||
-					i.getSummary() == searchTerm ||
-					i.getTitle() == searchTerm)
+			if (i.getAuthorFirstName().equals(searchTerm) ||
+					i.getAuthorLastName().equals(searchTerm) ||
+					i.getCategory().equals(searchTerm) ||
+					i.getDate().toString().equals(searchTerm) ||
+					i.getDocumentType().toString().equals(searchTerm) ||
+					i.getLocation().equals(searchTerm) ||
+					i.getReferenceNumber().equals(searchTerm) ||
+					i.getSummary().equals(searchTerm) ||
+					i.getTitle().equals(searchTerm))
 				arr[x] = i;
 			x++;
 		}
@@ -113,8 +113,9 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getReferenceNumber() == referenceNumber)
+			if (i.getReferenceNumber().equals(referenceNumber)) {
 				arr[x] = i;
+			}
 			x++;
 		}
 		return arr;
@@ -124,8 +125,9 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getTitle() == title)
+			if (i.getTitle().equals(title)) {
 				arr[x] = i;
+			}
 			x++;
 		}
 		return arr;
@@ -146,8 +148,9 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getAuthorFirstName() == author || i.getAuthorLastName() == author)
+			if (i.getAuthorFirstName().equals(author) || i.getAuthorLastName().equals(author)) {
 				arr[x] = i;
+			}
 			x++;
 		}
 		return arr;
@@ -168,8 +171,9 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getCategory() == category)
+			if (i.getCategory().equals(category)) {
 				arr[x] = i;
+			}
 			x++;
 		}
 		return arr;
@@ -179,8 +183,9 @@ public class CsvDataAccessor implements DataAccessor {
 		Record[] arr = new Record[records.size()];
 		int x = 0;
 		for (Record i : records) {
-			if (i.getSummary() == summary)
+			if (i.getSummary().equals(summary)) {
 				arr[x] = i;
+			}
 			x++;
 		}
 		return arr;
