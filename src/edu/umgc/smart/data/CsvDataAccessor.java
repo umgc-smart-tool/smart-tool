@@ -5,9 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
+
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 

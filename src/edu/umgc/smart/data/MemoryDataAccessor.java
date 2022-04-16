@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.umgc.smart.model.Record;
+import edu.umgc.smart.model.RecordType;
 
 public class MemoryDataAccessor implements DataAccessor {
   private List<Record> records = new ArrayList<>();
@@ -60,5 +61,45 @@ public class MemoryDataAccessor implements DataAccessor {
     } catch (Exception e) {
       // If record doesn't already exist, don't delete anything
     }
+  }
+
+  @Override
+  public Record[] getRecordsByMainSearch(String searchTerm) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByReferenceNum(String referenceNumber) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByTitle(String title) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByRecordType(RecordType recordType) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByAuthor(String author) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByDate(Date date) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByCategory(String category) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsBySummary(String summary) {
+    return new Record[0];
   }
 }
