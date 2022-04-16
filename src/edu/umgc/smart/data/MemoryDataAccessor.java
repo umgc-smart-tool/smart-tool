@@ -10,17 +10,17 @@ public class MemoryDataAccessor implements DataAccessor {
   private List<Record> records = new ArrayList<>();
 
   public MemoryDataAccessor() {
-    Record record = new Record();
-    record.setReferenceNumber("DOC-R-21-01234");
-    record.setTitle("Finance Report for FY21 Q3");
-    record.setDocumentType("Record");
-    record.setAuthorLastName("Lastname");
-    record.setAuthorFirstName("Firstname");
-    record.setDate(Date.valueOf("2021-10-15"));
-    record.setCategory("Finance");
-    record.setSummary("This report covers the finances for the 3rd quarter of 2021.");
-    record.setLocation("/network/folder/reports/Q3");
-    records.add(record);
+    Record r = new Record();
+    r.setReferenceNumber("DOC-R-21-01234");
+    r.setTitle("Finance Report for FY21 Q3");
+    r.setDocumentType("Record");
+    r.setAuthorLastName("Lastname");
+    r.setAuthorFirstName("Firstname");
+    r.setDate(Date.valueOf("2021-10-15"));
+    r.setCategory("Finance");
+    r.setSummary("This report covers the finances for the 3rd quarter of 2021.");
+    r.setLocation("/network/folder/reports/Q3");
+    records.add(r);
   }
 
   @Override
@@ -34,19 +34,19 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public void save(Record record) {
-    this.records.add(record);
+  public void save(Record r) {
+    this.records.add(r);
   }
 
   @Override
-  public void update(int id, Record record) {
+  public void update(int id, Record r) {
     Record temp = this.get(id);
     this.records.remove(temp);
-    records.add(id, record);
+    records.add(id, r);
   }
 
   @Override
-  public void delete(Record record) {
-    this.records.remove(record);
+  public void delete(Record r) {
+    this.records.remove(r);
   }
 }

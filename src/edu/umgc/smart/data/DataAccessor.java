@@ -9,9 +9,9 @@ public interface DataAccessor {
 
   public List<Record> getAll();
 
-  public void save(Record record);
+  public void save(Record r);
 
-  public void update(int id, Record record);
+  public void update(int id, Record r);
 
   public void delete(Record t);
 }

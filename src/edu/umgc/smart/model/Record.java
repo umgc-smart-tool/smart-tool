@@ -7,6 +7,10 @@ import java.sql.Date;
  */
 public class Record {
 
+  /**
+   *
+   */
+  private static final String HEADERS = "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
   private String referenceNumber;
   private String title;
   private String documentType;
@@ -18,57 +22,73 @@ public class Record {
   private String location;
 
   public static String getHeaders() {
-    return "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
+    return HEADERS;
   }
 
   public String getReferenceNumber() {
     return referenceNumber;
   }
+
   public void setReferenceNumber(String referenceNumber) {
     this.referenceNumber = referenceNumber;
   }
+
   public String getTitle() {
     return title;
   }
+
   public void setTitle(String title) {
     this.title = title;
   }
+
   public String getDocumentType() {
     return documentType;
   }
+
   public void setDocumentType(String documentType) {
     this.documentType = documentType;
   }
+
   public String getAuthorLastName() {
     return authorLastName;
   }
+
   public void setAuthorLastName(String authorLastName) {
     this.authorLastName = authorLastName;
   }
+
   public String getAuthorFirstName() {
     return authorFirstName;
   }
+
   public void setAuthorFirstName(String authorFirstName) {
     this.authorFirstName = authorFirstName;
   }
+
   public Date getDate() {
     return date;
   }
+
   public void setDate(Date date) {
     this.date = date;
   }
+
   public String getCategory() {
     return category;
   }
+
   public void setCategory(String category) {
     this.category = category;
   }
+
   public String getSummary() {
     return summary;
   }
+
   public void setSummary(String summary) {
     this.summary = summary;
   }
+
   public String getLocation() {
     return location;
   }

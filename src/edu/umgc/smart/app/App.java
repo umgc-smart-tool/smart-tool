@@ -2,9 +2,7 @@ package edu.umgc.smart.app;
 
 import edu.umgc.smart.data.DataAccessor;
 import edu.umgc.smart.data.MemoryDataAccessor;
-import edu.umgc.smart.view.ConsoleView;
-import edu.umgc.smart.view.SwingView;
-import edu.umgc.smart.view.View;
+import edu.umgc.smart.view.*;
 
 public class App {
   private View view;
@@ -29,7 +27,7 @@ public class App {
     if (args.length > 0 && args[0].equalsIgnoreCase("console")) {
       return new ConsoleView();
     } else {
-      return new SwingView();
+      return new CardView();
     }
   }
 
