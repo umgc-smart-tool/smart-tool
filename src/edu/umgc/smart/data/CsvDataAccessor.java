@@ -51,7 +51,6 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public Record get(String referenceNumber) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -70,7 +69,6 @@ public class CsvDataAccessor implements DataAccessor {
 				fWriter.append("\n");
 			}
 			fWriter.flush();
-			fWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} // end catch
@@ -78,13 +76,11 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public void update(String referenceNumber, Record r) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void delete(Record t) {
-		// TODO Auto-generated method stub
 		for (Record i : records)
 			if (i == t)
 				records.remove(records.indexOf(t));
