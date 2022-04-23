@@ -8,11 +8,10 @@ import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class SearchPanel extends JPanel {
+public class SearchPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -30,8 +29,8 @@ public class SearchPanel extends JPanel {
     searchButton.addActionListener(
         e -> LOGGER.log(Level.INFO,
             String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText())));
-    createRecordButton.addActionListener(e -> cardView.setPanel(CardView.CREATE_RECORD_PANEL));
-    advancedSearchButton.addActionListener(e -> cardView.setPanel(CardView.ADVANCED_SEARCH_PANEL));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordPanel(cardView, ViewType.CREATE)));
+    advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchPanel(cardView)));
 
     constraints.anchor = GridBagConstraints.LAST_LINE_END; // Anchor to bottom right corner
     constraints.weighty = 0.5;
@@ -77,6 +76,10 @@ public class SearchPanel extends JPanel {
     constraints.gridx = 2;
     constraints.gridy = 3;
     this.add(advancedSearchButton, constraints);
+  }
+
+  public String getName() {
+    return "Search";
   }
 
 }

@@ -9,10 +9,11 @@ import javax.swing.*;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
-public class ViewRecordPanel extends JPanel {
+public class ViewRecordPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private String[] fieldNames = Record.getHeaders().split(",");
+  private String name = "View Record";
 
   public ViewRecordPanel(CardView cardView, ViewType viewType) {
     JButton saveButton = new JButton("Save");
@@ -33,7 +34,7 @@ public class ViewRecordPanel extends JPanel {
 
     // ---------- Add action listeners (functionality) to buttons ----------
     // Main Menu Button
-    mainMenuButton.addActionListener(e -> cardView.setPanel(CardView.SEARCH_PANEL));
+    mainMenuButton.addActionListener(e -> cardView.setPanel(new SearchPanel(cardView)));
 
     // Save Button
     saveButton.addActionListener(e -> {
@@ -92,16 +93,23 @@ public class ViewRecordPanel extends JPanel {
         }
         textFields[5].setEditable(false); // Date text field.
         textFields[5].setBackground(Color.LIGHT_GRAY);
+        this.name = "Create Record";
         break;
       case VIEW: // When viewing, no fields are editable
         for (int i = 0; i < fieldNames.length; i++) {
           textFields[i].setEditable(false);
           textFields[i].setBackground(Color.LIGHT_GRAY);
         }
+        this.name = "View Record";
         break;
       default:
         LOGGER.log(Level.SEVERE, "Invalid View");
     }
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
   }
 
 }
