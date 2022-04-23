@@ -48,7 +48,7 @@ public class MemoryDataAccessor implements DataAccessor {
   @Override
   public void update(String referenceNumber, Record r) {
     Record temp = this.get(referenceNumber);
-    if (temp != null) {
+    if (null != temp) {
       this.records.remove(temp);
     }
     records.add(r);
