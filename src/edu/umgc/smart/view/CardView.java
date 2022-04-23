@@ -25,7 +25,7 @@ public class CardView extends View {
   public CardView() {
     mainPane = frame.getContentPane();
     mainPane.setLayout(new CardLayout());
-    currentPanel = new SearchPanel(this);
+    currentPanel = new SearchCardPanel(this);
     mainPane.add(currentPanel);
 
     frame.setSize(new Dimension(750, 500));

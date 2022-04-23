@@ -11,11 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class SearchPanel extends CardPanel {
+public class SearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-  public SearchPanel(CardView cardView) {
+  public SearchCardPanel(CardView cardView) {
     JLabel searchBoxLabel = new JLabel("Search for Company Records", SwingConstants.CENTER);
     JLabel emptyLabel = new JLabel("  ");
     JTextField searchBoxField = new JTextField();
@@ -29,8 +29,8 @@ public class SearchPanel extends CardPanel {
     searchButton.addActionListener(
         e -> LOGGER.log(Level.INFO,
             String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText())));
-    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordPanel(cardView, ViewType.CREATE)));
-    advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchPanel(cardView)));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, ViewType.CREATE)));
+    advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
     constraints.anchor = GridBagConstraints.LAST_LINE_END; // Anchor to bottom right corner
     constraints.weighty = 0.5;

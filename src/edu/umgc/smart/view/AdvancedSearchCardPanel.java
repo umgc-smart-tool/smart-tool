@@ -15,12 +15,12 @@ import javax.swing.JTextField;
 
 import edu.umgc.smart.model.Record;
 
-public class AdvancedSearchPanel extends CardPanel {
+public class AdvancedSearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private String[] fieldNames = Record.getHeaders().split(",");
 
-  public AdvancedSearchPanel(CardView cardView) {
+  public AdvancedSearchCardPanel(CardView cardView) {
     JButton mainSearchButton = new JButton("Main Menu Search");
 
     JLabel[] labels = new JLabel[fieldNames.length];
@@ -72,7 +72,7 @@ public class AdvancedSearchPanel extends CardPanel {
         String.format("Searching by summary: %s", searchFields[6].getText())));
 
     // mainSearchButton - Return to simple search / main window.
-    mainSearchButton.addActionListener(e -> cardView.setPanel(new SearchPanel(cardView)));
+    mainSearchButton.addActionListener(e -> cardView.setPanel(new SearchCardPanel(cardView)));
 
     // ---------- Add labels, search fields and search buttons to frame ----------
     constraints.weighty = 0.15;

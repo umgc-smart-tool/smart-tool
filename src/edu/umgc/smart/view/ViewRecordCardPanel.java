@@ -9,13 +9,13 @@ import javax.swing.*;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
-public class ViewRecordPanel extends CardPanel {
+public class ViewRecordCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private String[] fieldNames = Record.getHeaders().split(",");
   private String name = "View Record";
 
-  public ViewRecordPanel(CardView cardView, ViewType viewType) {
+  public ViewRecordCardPanel(CardView cardView, ViewType viewType) {
     JButton saveButton = new JButton("Save");
     JButton deleteButton = new JButton("Delete");
     JButton mainMenuButton = new JButton("Main Menu Search");
@@ -34,7 +34,7 @@ public class ViewRecordPanel extends CardPanel {
 
     // ---------- Add action listeners (functionality) to buttons ----------
     // Main Menu Button
-    mainMenuButton.addActionListener(e -> cardView.setPanel(new SearchPanel(cardView)));
+    mainMenuButton.addActionListener(e -> cardView.setPanel(new SearchCardPanel(cardView)));
 
     // Save Button
     saveButton.addActionListener(e -> {
