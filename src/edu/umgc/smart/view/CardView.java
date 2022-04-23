@@ -1,5 +1,6 @@
 package edu.umgc.smart.view;
 
+import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -8,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -20,11 +20,13 @@ public class CardView extends View {
 
   private Container mainPane;
 
-  private JPanel currentPanel;
+  private CardPanel currentPanel;
 
   public CardView() {
     mainPane = frame.getContentPane();
-    mainPane.add(new SearchPanel(this));
+    mainPane.setLayout(new CardLayout());
+    currentPanel = new SearchPanel(this);
+    mainPane.add(currentPanel);
 
     frame.setSize(new Dimension(750, 500));
     frame.setResizable(false);
