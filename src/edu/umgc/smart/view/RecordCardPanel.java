@@ -37,6 +37,19 @@ public abstract class RecordCardPanel extends CardPanel {
     addPanelComponents();
   }
 
+  RecordCardPanel(CardView cardView, Record currentRecord) {
+    this(cardView);
+    textFields[0].setText(currentRecord.getReferenceNumber());
+    textFields[1].setText(currentRecord.getTitle());
+    textFields[2].setText(currentRecord.getDocumentType().toString());
+    textFields[3].setText(currentRecord.getAuthorLastName());
+    textFields[4].setText(currentRecord.getAuthorFirstName());
+    textFields[5].setText(currentRecord.getDocumentType().toString());
+    textFields[6].setText(currentRecord.getCategory());
+    textFields[7].setText(currentRecord.getSummary());
+    textFields[8].setText(currentRecord.getLocation());
+  }
+
   private void initializeLabelsAndFields() {
     for (int i = 0; i < fieldNames.length; i++) {
       fieldLabels[i] = new JLabel(fieldNames[i]);

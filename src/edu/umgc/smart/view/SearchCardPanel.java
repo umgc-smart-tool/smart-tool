@@ -3,7 +3,6 @@ package edu.umgc.smart.view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -26,9 +25,10 @@ public class SearchCardPanel extends CardPanel {
     this.setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
 
-    searchButton.addActionListener(
-        e -> LOGGER.log(Level.INFO,
-            String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText())));
+    searchButton.addActionListener(e -> {
+      LOGGER.info(String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText()));
+      cardView.setPanel(new ResultsCardPanel(cardView, cardView.searchFor(searchBoxField.getText()), searchBoxField.getText()));
+    });
     createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 

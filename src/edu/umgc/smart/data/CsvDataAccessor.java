@@ -113,8 +113,7 @@ public class CsvDataAccessor implements DataAccessor {
 	}
 
 	public Record[] getRecordsByMainSearch(String searchTerm) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
 			if (i.getAuthorFirstName().equals(searchTerm) ||
 					i.getAuthorLastName().equals(searchTerm) ||
@@ -125,10 +124,9 @@ public class CsvDataAccessor implements DataAccessor {
 					i.getReferenceNumber().equals(searchTerm) ||
 					i.getSummary().equals(searchTerm) ||
 					i.getTitle().equals(searchTerm))
-				arr[x] = i;
-			x++;
+				arr.add(i);
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByReferenceNum(String referenceNumber) {

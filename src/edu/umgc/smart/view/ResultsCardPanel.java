@@ -1,44 +1,34 @@
 package edu.umgc.smart.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.BorderLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.JScrollPane;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.Record;
-import edu.umgc.smart.model.RecordType;
 
-public class ResultsCardPanel extends CardPanel{
+public class ResultsCardPanel extends CardPanel {
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private String[] fieldNames = Record.getHeaders().split(",");
 
-    public ResultsCardPanel(CardView cardView, Record[] records, String searchTerm){
+    public ResultsCardPanel(CardView cardView, Record[] records, String searchTerm) {
         JTextField searchField = new JTextField();
         JButton searchButton = new JButton("Search");
         JButton advancedSearchButton = new JButton("Advanced Search");
         JButton[] selectButtons = new JButton[records.length]; // Select buttons for all the displayed records
         JLabel searchLabel = new JLabel("General Search: ");
-
 
         this.setLayout(new BorderLayout());
         JPanel searchPanel = new JPanel();
@@ -56,19 +46,21 @@ public class ResultsCardPanel extends CardPanel{
         // ---------- Add action listeners (functionality) to buttons ----------
         // Advanced Search Button
         advancedSearchButton.addActionListener(e -> {
+            LOGGER.info("Advanced Search Button pressed");
             cardView.setPanel(new AdvancedSearchCardPanel(cardView));
         });
 
         // Main Search Button
-        searchButton.addActionListener(e -> LOGGER.info("Search button pressed: " + searchField.getText()));
+        searchButton.addActionListener(e -> {
+            LOGGER.info("Search button pressed: " + searchField.getText());
+            cardView.setPanel(
+                    new ResultsCardPanel(cardView, cardView.searchFor(searchField.getText()), searchField.getText()));
+        });
 
         // Select Buttons for each Record
         for (int i = 0; i < selectButtons.length; i++) {
-            int finalI = i;
-            selectButtons[i].addActionListener(e -> {
-                //viewRecordWindow(resultsFrame.getLocationOnScreen(), ViewType.VIEW, records[finalI]);
-                cardView.setPanel(new ViewRecordCardPanel(cardView));
-            });
+            Record selectedRecord = records[i];
+            selectButtons[i].addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, selectedRecord)));
         }
 
         // ---------- Add text field, label and buttons to search panel, and panel to
@@ -101,10 +93,12 @@ public class ResultsCardPanel extends CardPanel{
 
         // Add results to resultsPanel
         if (records.length == 0) {
-            JLabel noResultLabel = new JLabel("There are no results for: \"" + searchTerm + "\"", SwingConstants.CENTER);
+            JLabel noResultLabel = new JLabel("There are no results for: \"" + searchTerm + "\"",
+                    SwingConstants.CENTER);
             resultsPanel.add(noResultLabel);
         } else {
-            System.out.println(Arrays.toString(records));
+            String printedRecords = Arrays.toString(records);
+            LOGGER.info(printedRecords);
             for (int i = 0; i < records.length; i++) {
                 JPanel recordPanel = new JPanel();
                 recordPanel.setLayout(new GridLayout(1, 4));
