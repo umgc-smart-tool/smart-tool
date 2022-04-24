@@ -33,11 +33,18 @@ public class CsvDataAccessor implements DataAccessor {
 
 	public CsvDataAccessor() {
 		int numberOfRecords = 10;
-		for (int i = 0; i < numberOfRecords; i++){
-      records.add(new Record("R-22-" + i, "Title " + i, "MEMO",
-              "Longo", "Josh", "2022-04-16",
-              "Finance", "Summary " + i, "Location"));
-    }
+		for (int i = 0; i < numberOfRecords; i++) {
+			records.add(new Record.Builder("R-22-" + i)
+					.title("Title " + i)
+					.type("MEMO")
+					.lastName("Longo")
+					.firstName("Josh")
+					.date("2022-04-16")
+					.category("Finance")
+					.summary("Summary " + i)
+					.location("Location")
+					.build());
+		}
 	}
 
 	public void loadFile() {
@@ -56,8 +63,16 @@ public class CsvDataAccessor implements DataAccessor {
 	} // end loadFile()
 
 	public Record createRecord(String[] params) {
-		return new Record(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7],
-				params[8]);
+		return new Record.Builder(params[0])
+				.title(params[1])
+				.type(params[2])
+				.lastName(params[3])
+				.firstName(params[4])
+				.date(params[5])
+				.category(params[6])
+				.summary(params[7])
+				.location(params[8])
+				.build();
 	} // end createRecord()
 
 	@Override

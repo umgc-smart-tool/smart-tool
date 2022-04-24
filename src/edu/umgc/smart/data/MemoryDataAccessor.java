@@ -13,16 +13,16 @@ public class MemoryDataAccessor implements DataAccessor {
   private List<Record> records = new ArrayList<>();
 
   public MemoryDataAccessor() {
-    Record r = new Record();
-    r.setReferenceNumber("DOC-R-21-01234");
-    r.setTitle("Finance Report for FY21 Q3");
-    r.setDocumentType("Record");
-    r.setAuthorLastName("Lastname");
-    r.setAuthorFirstName("Firstname");
-    r.setDate(Date.valueOf("2021-10-15"));
-    r.setCategory("Finance");
-    r.setSummary("This report covers the finances for the 3rd quarter of 2021.");
-    r.setLocation("/network/folder/reports/Q3");
+    Record r = new Record.Builder("DOC-R-21-01234")
+        .title("Finance Report for FY21 Q3")
+        .type("Record")
+        .lastName("Lastname")
+        .firstName("Firstname")
+        .date(Date.valueOf("2021-10-15"))
+        .category("Finance")
+        .summary("This report covers the finances for the 3rd quarter of 2021.")
+        .location("/network/folder/reports/Q3")
+        .build();
     records.add(r);
   }
 
