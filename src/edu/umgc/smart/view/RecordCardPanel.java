@@ -1,6 +1,7 @@
 package edu.umgc.smart.view;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -9,49 +10,60 @@ import edu.umgc.smart.model.RecordType;
 
 public abstract class RecordCardPanel extends CardPanel {
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-  private String[] fieldNames = Record.getHeaders().split(",");
+  private static final String[] fieldNames = Record.getHeaders().split(",");
 
-  private Record[] results;
-  private Record currentRecord;
+  private CardView cardView;
 
-  RecordCardPanel(CardView cardView, Record r) {
-    this.currentRecord = r;
+  private JButton saveButton = new JButton("Save");
+  private JButton deleteButton = new JButton("Delete");
+  private JButton mainMenuButton = new JButton("Main Menu Search");
+  private JLabel[] fieldLabels = new JLabel[fieldNames.length];
+  private JTextField[] textFields = new JTextField[fieldNames.length];
+  private JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
+  private GridBagConstraints constraints = new GridBagConstraints();
 
-    JButton saveButton = new JButton("Save");
-    JButton deleteButton = new JButton("Delete");
-    JButton mainMenuButton = new JButton("Main Menu Search");
-    JLabel[] fieldLabels = new JLabel[fieldNames.length];
-    JTextField[] textFields = new JTextField[fieldNames.length];
-    JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
-
+  RecordCardPanel(CardView cardView) {
+    this.cardView = cardView;
     this.setLayout(new GridBagLayout());
-    GridBagConstraints constraints = new GridBagConstraints();
+    initializeLabelsAndFields();
+    initializeButtonActions();
+    addPanelComponents();
+  }
 
-    // Create labels, text fields and buttons with loop.
+  private void initializeLabelsAndFields() {
     for (int i = 0; i < fieldNames.length; i++) {
       fieldLabels[i] = new JLabel(fieldNames[i]);
       textFields[i] = new JTextField();
     }
+  }
 
-    // ---------- Add action listeners (functionality) to buttons ----------
-    // Main Menu Button
-    mainMenuButton.addActionListener(e -> cardView.setPanel(new SearchCardPanel(cardView)));
+  private void initializeButtonActions() {
+    setMainMenuButtonAction(e -> cardView.setPanel(new SearchCardPanel(cardView)));
+    setSaveButtonAction(e -> LOGGER.info("Save Button pressed"));
+    setDeleteButtonAction(e -> LOGGER.info("Delete button pressed"));
+  }
 
-    // Save Button
-    saveButton.addActionListener(e -> {
-      if (viewType == ViewType.CREATE) {
-        LOGGER.info("Save - Create/Modify");
-      } else if (viewType == ViewType.VIEW) {
-        LOGGER.info("Save - View");
-      } else {
-        LOGGER.info("error");
-      }
-    });
+  void setMainMenuButtonAction(ActionListener actionListener) {
+    setButtonAction(mainMenuButton, actionListener);
+  }
 
-    // Delete Button
-    deleteButton.addActionListener(e -> LOGGER.info("Delete button pressed"));
+  void setSaveButtonAction(ActionListener actionListener) {
+    setButtonAction(saveButton, actionListener);
+  }
 
-    // ---------- Add labels, text fields, buttons and frame ----------
+  void setDeleteButtonAction(ActionListener actionListener) {
+    setButtonAction(deleteButton, actionListener);
+  }
+
+  private void setButtonAction(JButton button, ActionListener actionListener) {
+    ActionListener[] current = button.getActionListeners();
+    for (int i = 0; i < current.length; i++) {
+      button.removeActionListener(current[i]);
+    }
+    button.addActionListener(actionListener);
+  }
+
+  private void addPanelComponents() {
     constraints.weighty = 0.15;
     constraints.fill = GridBagConstraints.HORIZONTAL;
     for (int i = 0; i < fieldNames.length; i++) {
@@ -84,6 +96,13 @@ public abstract class RecordCardPanel extends CardPanel {
     constraints.insets = new Insets(10, 5, 10, 50);
     constraints.gridx = 2;
     this.add(deleteButton, constraints);
+  }
+
+  void disableAllFields() {
+    for (int i = 0; i < fieldNames.length; i++) {
+      textFields[i].setEditable(false);
+      textFields[i].setBackground(Color.LIGHT_GRAY);
+    }
   }
 
   public abstract String getName();
