@@ -1,15 +1,14 @@
 package edu.umgc.smart.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * Java Bean for passing information between Model, View, and Controller.
  */
-public class Record {
+public class Record implements Serializable {
+  private static final long serialVersionUID = 600597679460063835L;
 
-  /**
-   *
-   */
   private static final String HEADERS = "Reference Number,Title,Type,Author Lastname,Author Firstname,Date,Category,Summary,Location";
   private String referenceNumber;
   private String title;
@@ -22,7 +21,6 @@ public class Record {
   private String location;
 
   public Record() {
-
   }
 
   public Record(String referenceNumber, String title, String documentType, String authorLastName,
