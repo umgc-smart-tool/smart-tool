@@ -29,7 +29,7 @@ public class SearchCardPanel extends CardPanel {
     searchButton.addActionListener(
         e -> LOGGER.log(Level.INFO,
             String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText())));
-    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, ViewType.CREATE)));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
     constraints.anchor = GridBagConstraints.LAST_LINE_END; // Anchor to bottom right corner
