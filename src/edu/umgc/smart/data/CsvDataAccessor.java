@@ -29,6 +29,15 @@ import edu.umgc.smart.model.RecordType;
 public class CsvDataAccessor implements DataAccessor {
 	private List<Record> records = new ArrayList<>();
 
+	public CsvDataAccessor() {
+		int numberOfRecords = 10;
+		for (int i = 0; i < numberOfRecords; i++){
+      records.add(new Record("R-22-" + i, "Title " + i, "MEMO",
+              "Longo", "Josh", "2022-04-16",
+              "Finance", "Summary " + i, "Location"));
+    }
+	}
+
 	public void loadFile() {
 		String line = "";
 		String delim = ",";
