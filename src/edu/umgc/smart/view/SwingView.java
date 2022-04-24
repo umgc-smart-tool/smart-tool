@@ -277,21 +277,55 @@ public class SwingView extends View {
     JLabel[] fieldLabels = new JLabel[fieldNames.length];
     JTextField[] textFields = new JTextField[fieldNames.length];
     JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
-
     JFrame viewRecordFrame = new JFrame();
-    viewRecordFrame.setLayout(new GridBagLayout());
+    JFrame modifyRecordFrame = new JFrame();
     GridBagConstraints constraints = new GridBagConstraints();
 
-    JFrame modifyRecordFrame = new JFrame();
-    modifyRecordFrame.setLayout(new GridBagLayout());
+    setFrameLayouts(viewRecordFrame, modifyRecordFrame);
+    createElementsWithLoop(fieldLabels, textFields);
+    addActionListeners(viewType, currentRecord, saveButton, deleteButton, mainMenuButton, modifyButton,
+        viewRecordFrame);
+    addElementsToFrame(mainMenuButton, fieldLabels, textFields, recordTypeComboBox, viewRecordFrame, constraints);
 
-    // Create labels, text fields and buttons with loop.
+    try {
+      switch (viewType) {
+        case CREATE: // When creating record, all fields but date are editable
+          setEditableForCreate(saveButton, deleteButton, textFields, recordTypeComboBox,
+              viewRecordFrame, constraints);
+          break;
+        case MODIFY: // When modifying, all fields but date are editable, and have text within
+          setEditableForModify(currentRecord, saveButton, deleteButton, textFields,
+              recordTypeComboBox, viewRecordFrame, constraints);
+          break;
+        case VIEW: // When viewing, no fields are editable
+          setEditableForView(currentRecord, deleteButton, modifyButton, textFields,
+              recordTypeComboBox, viewRecordFrame, constraints);
+          break;
+        default:
+          throw new SwingViewException("Invalid RecordType for viewRecordWindow()");
+      }
+    } catch (SwingViewException error) {
+      JOptionPane.showMessageDialog(null, "Invalid RecordType. \n" + error,
+          "GUI Error", JOptionPane.ERROR_MESSAGE);
+    }
+    setupViewRecordFrame(location, viewRecordFrame);
+    viewRecordFrame.setVisible(true);
+  }// End viewRecordWindow() method
+
+  private void setFrameLayouts(JFrame viewRecordFrame, JFrame modifyRecordFrame) {
+    viewRecordFrame.setLayout(new GridBagLayout());
+    modifyRecordFrame.setLayout(new GridBagLayout());
+  }
+
+  private void createElementsWithLoop(JLabel[] fieldLabels, JTextField[] textFields) {
     for (int i = 0; i < fieldNames.length; i++) {
       fieldLabels[i] = new JLabel(fieldNames[i]);
       textFields[i] = new JTextField();
     }
+  }
 
-    // ---------- Add action listeners (functionality) to buttons ----------
+  private void addActionListeners(ViewType viewType, Record currentRecord, JButton saveButton, JButton deleteButton,
+      JButton mainMenuButton, JButton modifyButton, JFrame viewRecordFrame) {
     // Main Menu Button
     mainMenuButton.addActionListener(e -> {
       mainWindow(viewRecordFrame.getLocationOnScreen());
@@ -322,8 +356,10 @@ public class SwingView extends View {
       viewRecordWindow(viewRecordFrame.getLocationOnScreen(), ViewType.MODIFY, currentRecord);
       viewRecordFrame.setVisible(false);
     });
+  }
 
-    // ---------- Add labels, text fields, and buttons to frame ----------
+  private void addElementsToFrame(JButton mainMenuButton, JLabel[] fieldLabels, JTextField[] textFields,
+      JComboBox<RecordType> recordTypeComboBox, JFrame viewRecordFrame, GridBagConstraints constraints) {
     constraints.weighty = 0.15;
     constraints.fill = GridBagConstraints.HORIZONTAL;
 
@@ -350,91 +386,87 @@ public class SwingView extends View {
     mainMenuButton.setBorderPainted(false);
     mainMenuButton.setForeground(Color.BLUE);
     viewRecordFrame.add(mainMenuButton, constraints);
+  }
 
-    // ---------- Set editable fields and add buttons based on the ViewType
-    // ----------
-    try {
-      switch (viewType) {
-        case CREATE: // When creating record, all fields but date are editable
-          constraints.insets = new Insets(10, 20, 10, 5);
-          constraints.gridx = 1;
-          viewRecordFrame.add(saveButton, constraints);
-          constraints.insets = new Insets(10, 5, 10, 50);
-          constraints.gridx = 2;
-          viewRecordFrame.add(deleteButton, constraints);
-          for (int i = 0; i < fieldNames.length; i++) {
-            textFields[i].setEditable(true);
-            textFields[i].setBackground(Color.white);
-            recordTypeComboBox.setEnabled(true);
-          }
-          textFields[4].setEditable(false); // Date text field.
-          textFields[4].setBackground(Color.LIGHT_GRAY);
-          viewRecordFrame.setTitle("SMART Tool - Create Record");
-          break;
-        case MODIFY: // When modifying, all fields but date are editable, and have text within
-          constraints.insets = new Insets(10, 20, 10, 5);
-          constraints.gridx = 1;
-          viewRecordFrame.add(saveButton, constraints);
-          constraints.insets = new Insets(10, 5, 10, 50);
-          constraints.gridx = 2;
-          viewRecordFrame.add(deleteButton, constraints);
-          for (int i = 0; i < fieldNames.length; i++) {
-            textFields[i].setEditable(true);
-            textFields[i].setBackground(Color.white);
-            recordTypeComboBox.setEnabled(true);
-          }
-          textFields[4].setEditable(false); // Date text field.
-          textFields[4].setBackground(Color.LIGHT_GRAY);
-          viewRecordFrame.setTitle("SMART Tool - Modify Record");
-
-          // Display contents of record to editable fields
-          textFields[0].setText(currentRecord.getReferenceNumber());
-          textFields[1].setText(currentRecord.getTitle());
-          recordTypeComboBox.setSelectedItem(currentRecord.getDocumentType());
-          textFields[3].setText(currentRecord.getAuthorLastName() + ", " + currentRecord.getAuthorFirstName());
-          textFields[4].setText(currentRecord.getDate().toString());
-          textFields[5].setText(currentRecord.getCategory());
-          textFields[6].setText(currentRecord.getSummary());
-          break;
-        case VIEW: // When viewing, no fields are editable
-          constraints.insets = new Insets(10, 20, 10, 5);
-          constraints.gridx = 1;
-          viewRecordFrame.add(modifyButton, constraints);
-          constraints.insets = new Insets(10, 5, 10, 50);
-          constraints.gridx = 2;
-          viewRecordFrame.add(deleteButton, constraints);
-          for (int i = 0; i < fieldNames.length; i++) {
-            textFields[i].setEditable(false);
-            textFields[i].setBackground(Color.LIGHT_GRAY);
-          }
-          recordTypeComboBox.setEnabled(false);
-
-          // Show contents of record.
-          textFields[0].setText(currentRecord.getReferenceNumber());
-          textFields[1].setText(currentRecord.getTitle());
-          recordTypeComboBox.setSelectedItem(currentRecord.getDocumentType());
-          textFields[3].setText(currentRecord.getAuthorLastName() + ", " + currentRecord.getAuthorFirstName());
-          textFields[4].setText(currentRecord.getDate().toString());
-          textFields[5].setText(currentRecord.getCategory());
-          textFields[6].setText(currentRecord.getSummary());
-          viewRecordFrame.setTitle("SMART Tool - View Record");
-          break;
-        default:
-          throw new SwingViewException("Invalid RecordType for viewRecordWindow()");
-      }
-    } catch (SwingViewException error) {
-      JOptionPane.showMessageDialog(null, "Invalid RecordType. \n" + error,
-          "GUI Error", JOptionPane.ERROR_MESSAGE);
+  private void setEditableForCreate(JButton saveButton, JButton deleteButton, JTextField[] textFields,
+      JComboBox<RecordType> recordTypeComboBox, JFrame viewRecordFrame, GridBagConstraints constraints) {
+    constraints.insets = new Insets(10, 20, 10, 5);
+    constraints.gridx = 1;
+    viewRecordFrame.add(saveButton, constraints);
+    constraints.insets = new Insets(10, 5, 10, 50);
+    constraints.gridx = 2;
+    viewRecordFrame.add(deleteButton, constraints);
+    for (int i = 0; i < fieldNames.length; i++) {
+      textFields[i].setEditable(true);
+      textFields[i].setBackground(Color.white);
+      recordTypeComboBox.setEnabled(true);
     }
+    textFields[4].setEditable(false); // Date text field.
+    textFields[4].setBackground(Color.LIGHT_GRAY);
+    viewRecordFrame.setTitle("SMART Tool - Create Record");
+  }
 
-    // ---------- Setup and show viewRecordFrame ----------
+  private void setEditableForModify(Record currentRecord, JButton saveButton, JButton deleteButton,
+      JTextField[] textFields,
+      JComboBox<RecordType> recordTypeComboBox, JFrame viewRecordFrame, GridBagConstraints constraints) {
+    constraints.insets = new Insets(10, 20, 10, 5);
+    constraints.gridx = 1;
+    viewRecordFrame.add(saveButton, constraints);
+    constraints.insets = new Insets(10, 5, 10, 50);
+    constraints.gridx = 2;
+    viewRecordFrame.add(deleteButton, constraints);
+    for (int i = 0; i < fieldNames.length; i++) {
+      textFields[i].setEditable(true);
+      textFields[i].setBackground(Color.white);
+      recordTypeComboBox.setEnabled(true);
+    }
+    textFields[4].setEditable(false); // Date text field.
+    textFields[4].setBackground(Color.LIGHT_GRAY);
+    viewRecordFrame.setTitle("SMART Tool - Modify Record");
+
+    // Display contents of record to editable fields
+    textFields[0].setText(currentRecord.getReferenceNumber());
+    textFields[1].setText(currentRecord.getTitle());
+    recordTypeComboBox.setSelectedItem(currentRecord.getDocumentType());
+    textFields[3].setText(currentRecord.getAuthorLastName() + ", " + currentRecord.getAuthorFirstName());
+    textFields[4].setText(currentRecord.getDate().toString());
+    textFields[5].setText(currentRecord.getCategory());
+    textFields[6].setText(currentRecord.getSummary());
+  }
+
+  private void setEditableForView(Record currentRecord, JButton deleteButton, JButton modifyButton,
+      JTextField[] textFields,
+      JComboBox<RecordType> recordTypeComboBox, JFrame viewRecordFrame, GridBagConstraints constraints) {
+    constraints.insets = new Insets(10, 20, 10, 5);
+    constraints.gridx = 1;
+    viewRecordFrame.add(modifyButton, constraints);
+    constraints.insets = new Insets(10, 5, 10, 50);
+    constraints.gridx = 2;
+    viewRecordFrame.add(deleteButton, constraints);
+    for (int i = 0; i < fieldNames.length; i++) {
+      textFields[i].setEditable(false);
+      textFields[i].setBackground(Color.LIGHT_GRAY);
+    }
+    recordTypeComboBox.setEnabled(false);
+
+    // Show contents of record.
+    textFields[0].setText(currentRecord.getReferenceNumber());
+    textFields[1].setText(currentRecord.getTitle());
+    recordTypeComboBox.setSelectedItem(currentRecord.getDocumentType());
+    textFields[3].setText(currentRecord.getAuthorLastName() + ", " + currentRecord.getAuthorFirstName());
+    textFields[4].setText(currentRecord.getDate().toString());
+    textFields[5].setText(currentRecord.getCategory());
+    textFields[6].setText(currentRecord.getSummary());
+    viewRecordFrame.setTitle("SMART Tool - View Record");
+  }
+
+  private void setupViewRecordFrame(Point location, JFrame viewRecordFrame) {
     viewRecordFrame.setSize(STANDARD_WINDOW_SIZE);
     viewRecordFrame.setMaximumSize(STANDARD_WINDOW_SIZE);
     viewRecordFrame.setMinimumSize(STANDARD_WINDOW_SIZE);
     viewRecordFrame.setLocation(location);
     viewRecordFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    viewRecordFrame.setVisible(true);
-  }// End viewRecordWindow() method
+  }
 
   /**
    * resultsWindow(Point location, String searchTerm, Record[] records): This
