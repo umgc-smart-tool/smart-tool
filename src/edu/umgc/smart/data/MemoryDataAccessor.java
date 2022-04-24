@@ -8,6 +8,8 @@ import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
 public class MemoryDataAccessor implements DataAccessor {
+  private static final long serialVersionUID = 3372578901821323067L;
+
   private List<Record> records = new ArrayList<>();
 
   public MemoryDataAccessor() {

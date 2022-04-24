@@ -27,6 +27,8 @@ import edu.umgc.smart.model.RecordType;
  */
 
 public class CsvDataAccessor implements DataAccessor {
+	private static final long serialVersionUID = 1564806799199445630L;
+
 	private List<Record> records = new ArrayList<>();
 
 	public CsvDataAccessor() {

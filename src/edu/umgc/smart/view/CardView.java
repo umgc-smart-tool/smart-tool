@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 public class CardView extends View {
-
+  private static final long serialVersionUID = 479582524176873805L;
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
   private JFrame frame = new JFrame();
