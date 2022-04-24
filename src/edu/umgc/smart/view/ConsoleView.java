@@ -10,11 +10,7 @@ import edu.umgc.smart.model.Record;
 public class ConsoleView extends View {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-  private Scanner scanner;
-
-  public ConsoleView() {
-    this.scanner = new Scanner(System.in);
-  }
+  private final transient Scanner scanner = new Scanner(System.in);
 
   public void start() {
     String message = String.format("%nCurrent Records:%n%s", getFormattedRecords());
