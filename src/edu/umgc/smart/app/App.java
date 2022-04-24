@@ -1,8 +1,10 @@
 package edu.umgc.smart.app;
 
-import edu.umgc.smart.data.DataAccessor;
 import edu.umgc.smart.data.CsvDataAccessor;
-import edu.umgc.smart.view.*;
+import edu.umgc.smart.data.DataAccessor;
+import edu.umgc.smart.view.CardView;
+import edu.umgc.smart.view.ConsoleView;
+import edu.umgc.smart.view.View;
 
 public class App {
   private View view;
