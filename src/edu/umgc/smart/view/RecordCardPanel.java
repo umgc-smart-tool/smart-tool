@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import edu.umgc.smart.model.Record;
@@ -68,11 +69,26 @@ public abstract class RecordCardPanel extends CardPanel {
   }
 
   void setSaveButtonAction(ActionListener actionListener) {
-    setButtonAction(saveButton, actionListener);
+    setButtonAction(saveButton, (e -> {
+      LOGGER.warning("UNIMPLEMENTED! Action should be SAVE");
+      JOptionPane.showMessageDialog(
+          this,
+          "This feature has not yet been implemented.\nIt will be available in the final version",
+          "Feature Not Available",
+          JOptionPane.WARNING_MESSAGE);
+    }));
+
   }
 
   void setDeleteButtonAction(ActionListener actionListener) {
-    setButtonAction(deleteButton, actionListener);
+    setButtonAction(deleteButton, (e -> {
+      LOGGER.warning("UNIMPLEMENTED! Action should be DELETE");
+      JOptionPane.showMessageDialog(
+          this,
+          "This feature has not yet been implemented.\nIt will be available in the final version",
+          "Feature Not Available",
+          JOptionPane.WARNING_MESSAGE);
+    }));
   }
 
   private void setButtonAction(JButton button, ActionListener actionListener) {
