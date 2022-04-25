@@ -13,24 +13,20 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 public class CardView extends View {
-
-  static final String SEARCH_PANEL = "Search";
-  static final String ADVANCED_SEARCH_PANEL = "Advanced Search";
-  static final String VIEW_RECORD_PANEL = "View Record";
-  static final String CREATE_RECORD_PANEL = "Create Record";
-
+  private static final long serialVersionUID = 479582524176873805L;
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
   private JFrame frame = new JFrame();
-  private CardLayout cardLayout = new CardLayout();
+
+  private Container mainPane;
+
+  private CardPanel currentPanel;
 
   public CardView() {
-    Container mainPane = frame.getContentPane();
-    mainPane.setLayout(cardLayout);
-    mainPane.add(SEARCH_PANEL, new SearchPanel(this));
-    mainPane.add(ADVANCED_SEARCH_PANEL, new AdvancedSearchPanel(this));
-    mainPane.add(VIEW_RECORD_PANEL, new ViewRecordPanel(this, ViewType.VIEW));
-    mainPane.add(CREATE_RECORD_PANEL, new ViewRecordPanel(this, ViewType.CREATE));
+    mainPane = frame.getContentPane();
+    mainPane.setLayout(new CardLayout());
+    currentPanel = new SearchCardPanel(this);
+    mainPane.add(currentPanel);
 
     frame.setSize(new Dimension(750, 500));
     frame.setResizable(false);
@@ -42,13 +38,15 @@ public class CardView extends View {
         LOGGER.log(Level.INFO, "Exiting Program");
       }
     });
-    frame.setTitle(String.format("SMART Tool - %s", SEARCH_PANEL));
+    frame.setTitle(String.format("SMART Tool - %s", "SEARCH"));
     frame.setVisible(true);
   }
 
-  public void setPanel(String panelName) {
-    frame.setTitle(String.format("SMART Tool - %s", panelName));
-    cardLayout.show(frame.getContentPane(), panelName);
+  public void setPanel(CardPanel panel) {
+    mainPane.add(panel);
+    mainPane.remove(currentPanel);
+    currentPanel = panel;
+    frame.setTitle(String.format("SMART Tool - %s", panel.getName()));
   }
 
   public void setTitle(String title) {

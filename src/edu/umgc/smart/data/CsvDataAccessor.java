@@ -27,7 +27,25 @@ import edu.umgc.smart.model.RecordType;
  */
 
 public class CsvDataAccessor implements DataAccessor {
+	private static final long serialVersionUID = 1564806799199445630L;
+
 	private List<Record> records = new ArrayList<>();
+
+	public CsvDataAccessor() {
+		int numberOfRecords = 10;
+		for (int i = 0; i < numberOfRecords; i++) {
+			records.add(new Record.Builder("R-22-" + i)
+					.title("Title " + i)
+					.type("MEMO")
+					.lastName("Longo")
+					.firstName("Josh")
+					.date("2022-04-16")
+					.category("Finance")
+					.summary("Summary " + i)
+					.location("Location")
+					.build());
+		}
+	}
 
 	public void loadFile() {
 		String line = "";
@@ -45,8 +63,16 @@ public class CsvDataAccessor implements DataAccessor {
 	} // end loadFile()
 
 	public Record createRecord(String[] params) {
-		return new Record(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7],
-				params[8]);
+		return new Record.Builder(params[0])
+				.title(params[1])
+				.type(params[2])
+				.lastName(params[3])
+				.firstName(params[4])
+				.date(params[5])
+				.category(params[6])
+				.summary(params[7])
+				.location(params[8])
+				.build();
 	} // end createRecord()
 
 	@Override
@@ -87,104 +113,90 @@ public class CsvDataAccessor implements DataAccessor {
 	}
 
 	public Record[] getRecordsByMainSearch(String searchTerm) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorFirstName().equals(searchTerm) ||
-					i.getAuthorLastName().equals(searchTerm) ||
-					i.getCategory().equals(searchTerm) ||
-					i.getDate().toString().equals(searchTerm) ||
-					i.getDocumentType().toString().equals(searchTerm) ||
-					i.getLocation().equals(searchTerm) ||
-					i.getReferenceNumber().equals(searchTerm) ||
-					i.getSummary().equals(searchTerm) ||
-					i.getTitle().equals(searchTerm))
-				arr[x] = i;
-			x++;
+			if (i.getAuthorFirstName().contains(searchTerm) ||
+					i.getAuthorLastName().contains(searchTerm) ||
+					i.getCategory().contains(searchTerm) ||
+					i.getDate().toString().contains(searchTerm) ||
+					i.getDocumentType().toString().contains(searchTerm) ||
+					i.getLocation().contains(searchTerm) ||
+					i.getReferenceNumber().contains(searchTerm) ||
+					i.getSummary().contains(searchTerm) ||
+					i.getTitle().contains(searchTerm))
+				arr.add(i);
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByReferenceNum(String referenceNumber) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getReferenceNumber().equals(referenceNumber)) {
-				arr[x] = i;
+			if (i.getReferenceNumber().contains(referenceNumber)) {
+				arr.add(i);
 			}
-			x++;
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByTitle(String title) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getTitle().equals(title)) {
-				arr[x] = i;
+			if (i.getTitle().contains(title)) {
+				arr.add(i);
 			}
-			x++;
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByRecordType(RecordType recordType) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getDocumentType() == recordType)
-				arr[x] = i;
-			x++;
+			if (i.getDocumentType().equals(recordType)) {
+				arr.add(i);
+			}
 		}
-		return arr;
+	return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByAuthor(String author) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorFirstName().equals(author) || i.getAuthorLastName().equals(author)) {
-				arr[x] = i;
+			if (i.getAuthorFirstName().contains(author) || i.getAuthorLastName().contains(author)) {
+				arr.add(i);
 			}
-			x++;
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByDate(Date date) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getDate() == date)
-				arr[x] = i;
-			x++;
+			if (i.getDate().equals(date)) {
+				arr.add(i);
+			}
 		}
-		return arr;
+	return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByCategory(String category) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getCategory().equals(category)) {
-				arr[x] = i;
+			if (i.getCategory().contains(category)) {
+				arr.add(i);
 			}
-			x++;
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsBySummary(String summary) {
-		Record[] arr = new Record[records.size()];
-		int x = 0;
+		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getSummary().equals(summary)) {
-				arr[x] = i;
+			if (i.getSummary().contains(summary)) {
+				arr.add(i);
 			}
-			x++;
 		}
-		return arr;
+		return arr.toArray(new Record[0]);
 	}
 
 }

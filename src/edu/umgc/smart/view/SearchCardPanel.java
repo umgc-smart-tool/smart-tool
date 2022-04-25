@@ -3,20 +3,18 @@ package edu.umgc.smart.view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class SearchPanel extends JPanel {
+public class SearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-  public SearchPanel(CardView cardView) {
+  public SearchCardPanel(CardView cardView) {
     JLabel searchBoxLabel = new JLabel("Search for Company Records", SwingConstants.CENTER);
     JLabel emptyLabel = new JLabel("  ");
     JTextField searchBoxField = new JTextField();
@@ -27,11 +25,12 @@ public class SearchPanel extends JPanel {
     this.setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
 
-    searchButton.addActionListener(
-        e -> LOGGER.log(Level.INFO,
-            String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText())));
-    createRecordButton.addActionListener(e -> cardView.setPanel(CardView.CREATE_RECORD_PANEL));
-    advancedSearchButton.addActionListener(e -> cardView.setPanel(CardView.ADVANCED_SEARCH_PANEL));
+    searchButton.addActionListener(e -> {
+      LOGGER.info(String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText()));
+      cardView.setPanel(new ResultsCardPanel(cardView, cardView.searchFor(searchBoxField.getText()), searchBoxField.getText()));
+    });
+    createRecordButton.addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView)));
+    advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
     constraints.anchor = GridBagConstraints.LAST_LINE_END; // Anchor to bottom right corner
     constraints.weighty = 0.5;
@@ -77,6 +76,10 @@ public class SearchPanel extends JPanel {
     constraints.gridx = 2;
     constraints.gridy = 3;
     this.add(advancedSearchButton, constraints);
+  }
+
+  public String getName() {
+    return "Search";
   }
 
 }
