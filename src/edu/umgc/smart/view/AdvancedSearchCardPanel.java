@@ -41,35 +41,13 @@ public class AdvancedSearchCardPanel extends CardPanel {
 
     // ---------- Add action listeners (functionality) to buttons ----------
 
-    // Reference Number field search button
-    searchButtons[0]
+    for (int i = 0; i < searchButtons.length; i++) {
+      String labelText = labels[i].getText();
+      String searchText = searchFields[i].getText();
+      searchButtons[i]
         .addActionListener(e -> LOGGER.log(Level.INFO,
-            String.format("Searching by reference number: %s", searchFields[0].getText())));
-
-    // Title field search button
-    searchButtons[1].addActionListener(e -> LOGGER.log(Level.INFO,
-        String.format("Searching by title: %s", searchFields[1].getText())));
-
-    // Record Type field search button
-    searchButtons[2]
-        .addActionListener(e -> LOGGER.log(Level.INFO,
-            String.format("Searching by record type: %s", searchFields[2].getText())));
-
-    // Author field search button
-    searchButtons[3].addActionListener(e -> LOGGER.log(Level.INFO,
-        String.format("Searching by author: %s", searchFields[3].getText())));
-
-    // Date field search button
-    searchButtons[4].addActionListener(e -> LOGGER.log(Level.INFO,
-        String.format("Searching by date: %s", searchFields[4].getText())));
-
-    // Category field search button
-    searchButtons[5].addActionListener(e -> LOGGER.log(Level.INFO,
-        String.format("Searching by category: %s", searchFields[5].getText())));
-
-    // Summary field search button
-    searchButtons[6].addActionListener(e -> LOGGER.log(Level.INFO,
-        String.format("Searching by summary: %s", searchFields[6].getText())));
+            String.format("Searching by %s: %s", labelText, searchText)));
+    }
 
     // mainSearchButton - Return to simple search / main window.
     mainSearchButton.addActionListener(e -> cardView.setPanel(new SearchCardPanel(cardView)));
