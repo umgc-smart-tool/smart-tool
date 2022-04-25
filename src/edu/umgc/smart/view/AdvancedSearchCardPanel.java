@@ -5,28 +5,26 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.logging.Level;
+import java.awt.event.*;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import edu.umgc.smart.model.Record;
 
 public class AdvancedSearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-  private String[] fieldNames = Record.getHeaders().split(",");
+  private static final String[] fieldNames = Record.getHeaders().split(",");
+
+  private JButton mainSearchButton = new JButton("Main Menu Search");
+  private JLabel[] labels = new JLabel[fieldNames.length];
+  private JTextField[] searchFields = new JTextField[fieldNames.length];
+  private JButton[] searchButtons = new JButton[fieldNames.length];
+  private transient ActionListener searchButtonListener;
 
   public AdvancedSearchCardPanel(CardView cardView) {
-    JButton mainSearchButton = new JButton("Main Menu Search");
-
-    JLabel[] labels = new JLabel[fieldNames.length];
-    JTextField[] searchFields = new JTextField[fieldNames.length];
-    JButton[] searchButtons = new JButton[fieldNames.length];
-
+    searchButtonListener = new SearchButtonListener(this);
     this.setLayout(new BorderLayout());
     JPanel searchPanel = new JPanel();
     searchPanel.setLayout(new GridBagLayout());
@@ -42,11 +40,7 @@ public class AdvancedSearchCardPanel extends CardPanel {
     // ---------- Add action listeners (functionality) to buttons ----------
 
     for (int i = 0; i < searchButtons.length; i++) {
-      String labelText = labels[i].getText();
-      String searchText = searchFields[i].getText();
-      searchButtons[i]
-        .addActionListener(e -> LOGGER.log(Level.INFO,
-            String.format("Searching by %s: %s", labelText, searchText)));
+      searchButtons[i].addActionListener(searchButtonListener);
     }
 
     // mainSearchButton - Return to simple search / main window.
@@ -84,5 +78,36 @@ public class AdvancedSearchCardPanel extends CardPanel {
   public String getName() {
     return "Advanced Search";
   }
+
+  private class SearchButtonListener implements ActionListener {
+    private JComponent parent;
+
+    SearchButtonListener(JComponent parent) {
+      this.parent = parent;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      int i = getButtonIndex((JButton) e.getSource());
+      String message = String.format("Searching by %s: %s", labels[i].getText(), searchFields[i].getText());
+      LOGGER.info(message);
+      String optionMessage = "This feature has not yet been implemented.\n"
+          + "It will be available in the final version.\n"
+          + message;
+          JOptionPane.showMessageDialog(parent, optionMessage,
+              "Feature Not Implemented", JOptionPane.WARNING_MESSAGE);
+    }
+
+    private int getButtonIndex(JButton button) {
+      for (int i = 0; i < searchButtons.length; i++) {
+        if (searchButtons[i].equals(button)) {
+          return i;
+        }
+      }
+      return 0;
+    }
+  }
+
+
 
 }
