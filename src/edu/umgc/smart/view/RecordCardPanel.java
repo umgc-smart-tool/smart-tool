@@ -74,7 +74,7 @@ public abstract class RecordCardPanel extends CardPanel {
       JOptionPane.showMessageDialog(
           this,
           "This feature has not yet been implemented.\nIt will be available in the final version",
-          "Feature Not Available",
+          "Feature Not Implemented",
           JOptionPane.WARNING_MESSAGE);
     }));
 
@@ -86,7 +86,7 @@ public abstract class RecordCardPanel extends CardPanel {
       JOptionPane.showMessageDialog(
           this,
           "This feature has not yet been implemented.\nIt will be available in the final version",
-          "Feature Not Available",
+          "Feature Not Implemented",
           JOptionPane.WARNING_MESSAGE);
     }));
   }
