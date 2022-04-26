@@ -9,18 +9,12 @@ public class ViewRecordCardPanel extends RecordCardPanel {
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private String name = "View Record";
 
-  public ViewRecordCardPanel(CardView cardView) {
-    super(cardView);
-    configureViewRecordPanel();
-  }
 
   public ViewRecordCardPanel(CardView cardView, Record currentRecord) {
-    super(cardView, currentRecord);
-    configureViewRecordPanel();
-  }
-
-  private void configureViewRecordPanel() {
-    setSaveButtonAction(e -> LOGGER.info("Save - View"));
+    super(cardView, currentRecord, "view");
+    setModifyButtonAction(e -> {
+      cardView.setPanel(new ModifyRecordCardPanel(cardView, currentRecord));
+    });
     disableAllFields();
   }
 

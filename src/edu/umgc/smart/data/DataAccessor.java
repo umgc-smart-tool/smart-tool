@@ -25,7 +25,9 @@ public interface DataAccessor extends Serializable {
 
   public Record[] getRecordsByRecordType(RecordType recordType);
 
-  public Record[] getRecordsByAuthor(String author);
+  public Record[] getRecordsByAuthorFirstName(String author);
+
+  public Record[] getRecordsByAuthorLastName(String author);
 
   public Record[] getRecordsByDate(Date date);
 

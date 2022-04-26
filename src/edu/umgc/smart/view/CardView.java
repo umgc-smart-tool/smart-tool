@@ -38,7 +38,7 @@ public class CardView extends View {
         LOGGER.log(Level.INFO, "Exiting Program");
       }
     });
-    frame.setTitle(String.format("SMART Tool - %s", "SEARCH"));
+    frame.setTitle(String.format("SMART Tool - %s [BETA]", "SEARCH"));
     frame.setVisible(true);
   }
 
@@ -46,7 +46,7 @@ public class CardView extends View {
     mainPane.add(panel);
     mainPane.remove(currentPanel);
     currentPanel = panel;
-    frame.setTitle(String.format("SMART Tool - %s", panel.getName()));
+    frame.setTitle(String.format("SMART Tool - %s [BETA]", panel.getName()));
   }
 
   public void setTitle(String title) {
