@@ -22,7 +22,6 @@ import edu.umgc.smart.model.Record;
 
 public class ResultsCardPanel extends CardPanel{
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private String[] fieldNames = Record.getHeaders().split(",");
     private static Record[] records;
     private static String searchTerm;
     private static String searchTermField;
@@ -49,9 +48,7 @@ public class ResultsCardPanel extends CardPanel{
 
         // ---------- Add action listeners (functionality) to buttons ----------
         // Advanced Search Button
-        advancedSearchButton.addActionListener(e -> {
-            cardView.setPanel(new AdvancedSearchCardPanel(cardView));
-        });
+        advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
         // Main Search Button
         searchButton.addActionListener(e -> {
@@ -68,10 +65,8 @@ public class ResultsCardPanel extends CardPanel{
 
         // Select Buttons for each Record
         for (int i = 0; i < selectButtons.length; i++) {
-            int finalI = i;
-            selectButtons[i].addActionListener(e -> {
-                cardView.setPanel(new ViewRecordCardPanel(cardView, records[finalI]));
-            });
+            final int finalI = i;
+            selectButtons[i].addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, records[finalI])));
         }
 
         // ---------- Add text field, label and buttons to search panel, and panel to frame ----------
@@ -126,9 +121,9 @@ public class ResultsCardPanel extends CardPanel{
     }// End ResultsCardPanel(CardView cardView) constructor
 
     public ResultsCardPanel(CardView cardView, Record[] recordsArray, String searchTermItem, String searchFieldItem){
-        searchTerm = searchTermItem;
-        records = recordsArray.clone();
-        searchTermField = searchFieldItem;
+        ResultsCardPanel.setSearchTerm(searchTermItem);
+        ResultsCardPanel.setRecordsArray(recordsArray);
+        ResultsCardPanel.setSearchFieldItem(searchFieldItem);
         this.setLayout(new BorderLayout());
         this.add(new ResultsCardPanel(cardView), BorderLayout.CENTER);
     }// End ResultsCardPanel(CardView cardView, Record[] recordsArray, String searchTermItem) constructor
@@ -136,5 +131,17 @@ public class ResultsCardPanel extends CardPanel{
     @Override
     public String getName() {
         return "Search Results";
+    }
+
+    private static void setSearchTerm(String searchTerm) {
+        ResultsCardPanel.searchTerm = searchTerm;
+    }
+
+    private static void setRecordsArray(Record[] records) {
+        ResultsCardPanel.records = records.clone();
+    }
+
+    private static void setSearchFieldItem(String searchFieldItem) {
+        ResultsCardPanel.searchTermField = searchFieldItem;
     }
 }

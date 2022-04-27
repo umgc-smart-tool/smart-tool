@@ -20,9 +20,9 @@ import edu.umgc.smart.model.RecordType;
 public abstract class RecordCardPanel extends CardPanel {
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private static final String[] fieldNames = Record.getHeaders().split(",");
-  private static Record currentRecord;
 
   private CardView cardView;
+  private Record currentRecord;
 
   private JButton saveModifiedRecordButton = new JButton("Save Changes");
   private JButton saveNewRecordButton = new JButton("Save New Record");
@@ -43,9 +43,9 @@ public abstract class RecordCardPanel extends CardPanel {
     addPanelComponents(viewType);
   }
 
-  RecordCardPanel(CardView cardView, Record record, String viewType) {
+  RecordCardPanel(CardView cardView, Record r, String viewType) {
     this(cardView, viewType);
-    currentRecord = record;
+    currentRecord = r;
     textFields[0].setText(currentRecord.getReferenceNumber());
     textFields[1].setText(currentRecord.getTitle());
     textFields[2].setText(currentRecord.getDocumentType().toString());
@@ -148,13 +148,23 @@ public abstract class RecordCardPanel extends CardPanel {
 
     constraints.insets = new Insets(10, 20, 10, 5);
     constraints.gridx = 2;
+
+    // TODO Move to respective RecordCardPanel implementations
     // Display modify or save button based on the view
     switch (viewType) {
-      case "create" -> this.add(saveNewRecordButton, constraints);
-      case "modify" -> this.add(saveModifiedRecordButton, constraints);
-      case "view" -> this.add(modifyButton, constraints);
-      default -> LOGGER.info("view type error");
+      case "create":
+        this.add(saveNewRecordButton, constraints);
+        break;
+      case "modify":
+        this.add(saveModifiedRecordButton, constraints);
+        break;
+      case "view":
+        this.add(modifyButton, constraints);
+        break;
+      default:
+        LOGGER.info("view type error");
     }
+
     constraints.insets = new Insets(10, 5, 10, 50);
     constraints.gridx = 3;
     this.add(deleteButton, constraints);

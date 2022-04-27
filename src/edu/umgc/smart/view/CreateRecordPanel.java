@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class CreateRecordPanel extends RecordCardPanel{
-    private String name = "Create Record";
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     CreateRecordPanel(CardView cardView, String viewType) {
@@ -26,6 +25,6 @@ public class CreateRecordPanel extends RecordCardPanel{
 
     @Override
     public String getName() {
-        return null;
+        return "Create Record";
     }
 }
