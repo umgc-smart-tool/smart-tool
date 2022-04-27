@@ -117,15 +117,15 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByMainSearch(String searchTerm) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorFirstName().equals(searchTerm) ||
-					i.getAuthorLastName().equals(searchTerm) ||
-					i.getCategory().equals(searchTerm) ||
-					i.getDate().toString().equals(searchTerm) ||
-					i.getDocumentType().toString().equals(searchTerm) ||
-					i.getLocation().equals(searchTerm) ||
-					i.getReferenceNumber().equals(searchTerm) ||
-					i.getSummary().equals(searchTerm) ||
-					i.getTitle().equals(searchTerm))
+			if (i.getAuthorFirstName().contains(searchTerm) ||
+					i.getAuthorLastName().contains(searchTerm) ||
+					i.getCategory().contains(searchTerm) ||
+					i.getDate().toString().contains(searchTerm) ||
+					i.getDocumentType().toString().contains(searchTerm) ||
+					i.getLocation().contains(searchTerm) ||
+					i.getReferenceNumber().contains(searchTerm) ||
+					i.getSummary().contains(searchTerm) ||
+					i.getTitle().contains(searchTerm))
 				arr.add(i);
 		}
 		return arr.toArray(new Record[0]);
@@ -134,7 +134,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByReferenceNum(String referenceNumber) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getReferenceNumber().equals(referenceNumber)) {
+			if (i.getReferenceNumber().contains(referenceNumber)) {
 				arr.add(i);
 			}
 		}
@@ -144,7 +144,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByTitle(String title) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getTitle().equals(title)) {
+			if (i.getTitle().contains(title)) {
 				arr.add(i);
 			}
 		}
@@ -154,8 +154,9 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByRecordType(RecordType recordType) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getDocumentType() == recordType)
+			if (i.getDocumentType().equals(recordType)) {
 				arr.add(i);
+			}
 		}
 		return arr.toArray(new Record[0]);
 	}
@@ -163,7 +164,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByAuthorFirstName(String author) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorFirstName().equals(author)) {
+			if (i.getAuthorFirstName().contains(author)) {
 				arr.add(i);
 			}
 		}
@@ -173,7 +174,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByAuthorLastName(String author) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorLastName().equals(author)) {
+			if (i.getAuthorLastName().contains(author)) {
 				arr.add(i);
 			}
 		}
@@ -183,8 +184,9 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByDate(Date date) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getDate() == date)
+			if (i.getDate().equals(date)) {
 				arr.add(i);
+			}
 		}
 		return arr.toArray(new Record[0]);
 	}
@@ -192,7 +194,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsByCategory(String category) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getCategory().equals(category)) {
+			if (i.getCategory().contains(category)) {
 				arr.add(i);
 			}
 		}
@@ -202,7 +204,7 @@ public class CsvDataAccessor implements DataAccessor {
 	public Record[] getRecordsBySummary(String summary) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getSummary().equals(summary)) {
+			if (i.getSummary().contains(summary)) {
 				arr.add(i);
 			}
 		}
