@@ -43,7 +43,7 @@ public class SearchCardPanel extends CardPanel {
                     "All Fields"));
           }
         });
-    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordPanel(cardView, "create")));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
     // ---------- Add labels, text field and buttons to frame ----------

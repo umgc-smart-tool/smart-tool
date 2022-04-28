@@ -24,10 +24,8 @@ public abstract class RecordCardPanel extends CardPanel {
   private CardView cardView;
   private Record currentRecord;
 
-  private JButton saveModifiedRecordButton = new JButton("Save Changes");
-  private JButton saveNewRecordButton = new JButton("Save New Record");
+  private JButton activeSaveButton = new JButton("SAVE");
   private JButton deleteButton = new JButton("Delete");
-  private JButton modifyButton = new JButton("Modify");
   private JButton mainMenuButton = new JButton("Main Menu Search");
   private JButton backToResultsButton = new JButton("Return to Results");
   private JLabel[] fieldLabels = new JLabel[fieldNames.length];
@@ -35,16 +33,16 @@ public abstract class RecordCardPanel extends CardPanel {
   private JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
   private GridBagConstraints constraints = new GridBagConstraints();
 
-  RecordCardPanel(CardView cardView, String viewType) {
+  RecordCardPanel(CardView cardView) {
     this.cardView = cardView;
     this.setLayout(new GridBagLayout());
     initializeLabelsAndFields();
     initializeButtonActions();
-    addPanelComponents(viewType);
+    addPanelComponents();
   }
 
-  RecordCardPanel(CardView cardView, Record r, String viewType) {
-    this(cardView, viewType);
+  RecordCardPanel(CardView cardView, Record r) {
+    this(cardView);
     currentRecord = r;
     textFields[0].setText(currentRecord.getReferenceNumber());
     textFields[1].setText(currentRecord.getTitle());
@@ -65,46 +63,30 @@ public abstract class RecordCardPanel extends CardPanel {
   }
 
   private void initializeButtonActions() {
-    setMainMenuButtonAction(e -> cardView.setPanel(new SearchCardPanel(cardView)));
-    setDeleteButtonAction(e -> {
+    setButtonAction(mainMenuButton, e -> cardView.setPanel(new SearchCardPanel(cardView)));
+    setButtonAction(deleteButton, e -> {
       int deleteOption = JOptionPane.showConfirmDialog(null,
-              "Are you sure you want to delete this record?");
-      // TODO: Implement the delete button functionality
-      if (deleteOption == 0){ // A 0 returned from showConfirmDialog is yes. 1 = no, 2 = cancel.
+          "Are you sure you want to delete this record?");
+      if (deleteOption == JOptionPane.YES_OPTION) {
         LOGGER.info("Delete confirmed");
         JOptionPane.showMessageDialog(null, "Deleting records is not yet implemented.");
       } else {
         LOGGER.info("Delete cancelled");
       }
     });
-    setBackResultsButtonAction(e -> {
+    setButtonAction(backToResultsButton, e -> {
       LOGGER.info("Back to results button pressed");
       cardView.setPanel(new ResultsCardPanel(cardView));
     });
   }
 
-  void setMainMenuButtonAction(ActionListener actionListener) {
-    setButtonAction(mainMenuButton, actionListener);
-  }
-
-  void setSaveNewRecordButtonAction(ActionListener actionListener) {
-    setButtonAction(saveNewRecordButton, actionListener);
-  }
-
-  void setSaveModifiedRecordButtonAction(ActionListener actionListener){
-    setButtonAction(saveModifiedRecordButton, actionListener);
-  }
-
-  void setModifyButtonAction(ActionListener actionListener){
-    setButtonAction(modifyButton, actionListener);
-  }
-
-  void setDeleteButtonAction(ActionListener actionListener) {
-    setButtonAction(deleteButton, actionListener);
-  }
-
-  void setBackResultsButtonAction(ActionListener actionListener){
-    setButtonAction(backToResultsButton, actionListener);
+  void setSaveButton(JButton button, ActionListener actionListener) {
+    constraints.insets = new Insets(10, 20, 10, 5);
+    constraints.gridx = 2;
+    button.addActionListener(actionListener);
+    this.remove(activeSaveButton);
+    this.add(button, constraints);
+    activeSaveButton = button;
   }
 
   private void setButtonAction(JButton button, ActionListener actionListener) {
@@ -115,7 +97,7 @@ public abstract class RecordCardPanel extends CardPanel {
     button.addActionListener(actionListener);
   }
 
-  private void addPanelComponents(String viewType) {
+  private void addPanelComponents() {
     constraints.weighty = 0.15;
     constraints.fill = GridBagConstraints.HORIZONTAL;
     for (int i = 0; i < fieldNames.length; i++) {
@@ -140,30 +122,6 @@ public abstract class RecordCardPanel extends CardPanel {
     mainMenuButton.setBorderPainted(false);
     mainMenuButton.setForeground(Color.BLUE);
     this.add(mainMenuButton, constraints);
-    if (viewType.equals("view") || viewType.equals("modify")){
-      constraints.insets = new Insets(10, 10, 10, 10);
-      constraints.gridx = 1;
-      this.add(backToResultsButton, constraints);
-    }
-
-    constraints.insets = new Insets(10, 20, 10, 5);
-    constraints.gridx = 2;
-
-    // TODO Move to respective RecordCardPanel implementations
-    // Display modify or save button based on the view
-    switch (viewType) {
-      case "create":
-        this.add(saveNewRecordButton, constraints);
-        break;
-      case "modify":
-        this.add(saveModifiedRecordButton, constraints);
-        break;
-      case "view":
-        this.add(modifyButton, constraints);
-        break;
-      default:
-        LOGGER.info("view type error");
-    }
 
     constraints.insets = new Insets(10, 5, 10, 50);
     constraints.gridx = 3;
@@ -177,13 +135,23 @@ public abstract class RecordCardPanel extends CardPanel {
     }
   }
 
-  void enableModifyFields(){
+  void enableModifyFields() {
     for (int i = 0; i < fieldNames.length; i++) {
       textFields[i].setEditable(true);
       textFields[i].setBackground(Color.white);
     }
     textFields[5].setEditable(false);
     textFields[5].setBackground(Color.LIGHT_GRAY);
+  }
+
+   void enableReturnButton(boolean enable) {
+    if (enable) {
+      constraints.insets = new Insets(10, 10, 10, 10);
+      constraints.gridx = 1;
+      this.add(backToResultsButton, constraints);
+    } else {
+      this.remove(backToResultsButton);
+    }
   }
 
   public abstract String getName();
