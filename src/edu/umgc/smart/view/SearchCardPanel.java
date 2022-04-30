@@ -3,6 +3,7 @@ package edu.umgc.smart.view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,37 +18,41 @@ import edu.umgc.smart.model.Record;
 public class SearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+  private JLabel searchBoxLabel = new JLabel("Search for Company Records", SwingConstants.CENTER);
+  private JLabel emptyLabel = new JLabel("  ");
+  private JTextField searchBoxField = new JTextField();
+  private JButton searchButton = new JButton("Search");
+  private JButton advancedSearchButton = new JButton("Advanced Search");
+  private JButton createRecordButton = new JButton("Create Record");
 
   public SearchCardPanel(CardView cardView) {
-    JLabel searchBoxLabel = new JLabel("Search for Company Records", SwingConstants.CENTER);
-    JLabel emptyLabel = new JLabel("  ");
-    JTextField searchBoxField = new JTextField();
-    JButton searchButton = new JButton("Search");
-    JButton advancedSearchButton = new JButton("Advanced Search");
-    JButton createRecordButton = new JButton("Create Record");
-
     this.setLayout(new GridBagLayout());
-    GridBagConstraints constraints = new GridBagConstraints();
+    addActionListeners(cardView);
+    addComponentsToPanel();
+  }
 
-    // ---------- Add action listeners (functionality) to buttons ----------
+  private void addActionListeners(CardView cardView) {
+    ActionListener searchAction = e -> {
+      String logMessage = String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText());
+      LOGGER.log(Level.INFO, logMessage);
+        if (searchBoxField.getText().isEmpty()){
+          JOptionPane.showMessageDialog(null, "Please enter a valid search term.",
+                  "Invalid Search", JOptionPane.ERROR_MESSAGE);
+        } else {
+          Record[] records = cardView.dataAccessor.getRecordsByMainSearch(searchBoxField.getText());
+          cardView.setPanel(new ResultsCardPanel(cardView, records, searchBoxField.getText(),
+                  "All Fields"));
+        }
+    };
 
-    searchButton.addActionListener(
-        e -> {
-          LOGGER.log(Level.INFO, String.format("Search Button Pressed. Searching for: %s", searchBoxField.getText()));
-          if (searchBoxField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Please enter a valid search term.",
-                    "Invalid Search", JOptionPane.ERROR_MESSAGE);
-          } else {
-            Record[] records = cardView.dataAccessor.getRecordsByMainSearch(searchBoxField.getText());
-            cardView.setPanel(new ResultsCardPanel(cardView, records, searchBoxField.getText(),
-                    "All Fields"));
-          }
-        });
+    searchButton.addActionListener(searchAction);
+    searchBoxField.addActionListener(searchAction);
     createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
+  }
 
-    // ---------- Add labels, text field and buttons to frame ----------
-
+  private void addComponentsToPanel() {
+    GridBagConstraints constraints = new GridBagConstraints();
     constraints.anchor = GridBagConstraints.LAST_LINE_END; // Anchor to bottom right corner
     constraints.weighty = 0.5;
     constraints.gridwidth = 1;

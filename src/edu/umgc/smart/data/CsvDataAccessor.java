@@ -107,10 +107,10 @@ public class CsvDataAccessor implements DataAccessor {
 	}
 
 	@Override
-	public void delete(Record t) {
+	public void delete(Record r) {
 		for (Record i : records)
-			if (i == t)
-				records.remove(records.indexOf(t));
+			if (i == r)
+				records.remove(records.indexOf(r));
 	}
 
 	public Record[] getRecordsByMainSearch(String searchTerm) {

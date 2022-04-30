@@ -14,7 +14,7 @@ public interface DataAccessor extends Serializable {
 
   public void update(String referenceNumber, Record r);
 
-  public void delete(Record t);
+  public void delete(Record r);
 
   public Record[] getRecordsByMainSearch(String searchTerm);
 
