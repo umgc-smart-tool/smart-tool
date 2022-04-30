@@ -147,7 +147,7 @@ public class ResultsCardPanel extends CardPanel {
             recordPanel.add(selectButtons[i]);
             recordPanel.add(new JLabel(records[i].getReferenceNumber()));
             recordPanel.add(new JLabel(records[i].getTitle()));
-            recordPanel.add(new JLabel(records[i].getDate().toString()));
+            recordPanel.add(new JLabel(records[i].getDate()));
             resultsPanel.add(recordPanel);
         }
     }
