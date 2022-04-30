@@ -16,19 +16,32 @@ public class ModifyRecordCardPanel extends RecordCardPanel {
         enableReturnButton(true);
         setSaveButton(
                 new JButton("Save Changes"),
-                e -> {
-                    LOGGER.info("Save button pressed");
-                    int saveOption = JOptionPane.showConfirmDialog(this,
-                            "Do you want to save these record changes?");
-                    if (saveOption == JOptionPane.YES_OPTION) {
-                        LOGGER.info("Save - modified record");
-                        Record updatedRecord = buildRecord();
-                        cardView.dataAccessor.update(currentRecord.getReferenceNumber(), updatedRecord);
-                    } else {
-                        LOGGER.info("Save Cancelled");
-                    }
-                });
+                e -> saveModifications(cardView, currentRecord));
         enableModifyFields();
+    }
+
+    private void saveModifications(CardView cardView, Record currentRecord) {
+        LOGGER.info("Save button pressed");
+        int saveOption = JOptionPane.showConfirmDialog(this,
+                "Do you want to save these record changes?");
+        if (saveOption == JOptionPane.YES_OPTION) {
+            attemptToSave(cardView, currentRecord);
+        } else {
+            LOGGER.info("Save Cancelled");
+        }
+    }
+
+    private void attemptToSave(CardView cardView, Record currentRecord) {
+        LOGGER.info("Save - modified record");
+        Record updatedRecord = buildRecord();
+        if (null != updatedRecord) {
+            cardView.dataAccessor.update(currentRecord.getReferenceNumber(), updatedRecord);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Reference Number is not valid",
+                    "Invalid Record",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
