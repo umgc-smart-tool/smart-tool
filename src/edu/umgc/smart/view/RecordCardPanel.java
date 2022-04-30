@@ -49,7 +49,7 @@ public abstract class RecordCardPanel extends CardPanel {
     textFields[2].setText(currentRecord.getDocumentType().toString());
     textFields[3].setText(currentRecord.getAuthorLastName());
     textFields[4].setText(currentRecord.getAuthorFirstName());
-    textFields[5].setText(currentRecord.toString());
+    textFields[5].setText(currentRecord.getDate());
     textFields[6].setText(currentRecord.getCategory());
     textFields[7].setText(currentRecord.getSummary());
     textFields[8].setText(currentRecord.getLocation());
