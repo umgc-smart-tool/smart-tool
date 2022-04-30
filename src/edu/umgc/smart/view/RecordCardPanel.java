@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -14,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import edu.umgc.smart.model.InputValidator;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
@@ -49,7 +49,7 @@ public abstract class RecordCardPanel extends CardPanel {
     textFields[2].setText(currentRecord.getDocumentType().toString());
     textFields[3].setText(currentRecord.getAuthorLastName());
     textFields[4].setText(currentRecord.getAuthorFirstName());
-    textFields[5].setText(currentRecord.getDate().toString());
+    textFields[5].setText(currentRecord.toString());
     textFields[6].setText(currentRecord.getCategory());
     textFields[7].setText(currentRecord.getSummary());
     textFields[8].setText(currentRecord.getLocation());
@@ -140,11 +140,15 @@ public abstract class RecordCardPanel extends CardPanel {
       textFields[i].setEditable(true);
       textFields[i].setBackground(Color.white);
     }
+    // Disable Reference Number Field
+    textFields[0].setEditable(false);
+    textFields[0].setBackground(Color.LIGHT_GRAY);
+    // Disable Date Field
     textFields[5].setEditable(false);
     textFields[5].setBackground(Color.LIGHT_GRAY);
   }
 
-   void enableReturnButton(boolean enable) {
+  void enableReturnButton(boolean enable) {
     if (enable) {
       constraints.insets = new Insets(10, 10, 10, 10);
       constraints.gridx = 1;
@@ -152,6 +156,35 @@ public abstract class RecordCardPanel extends CardPanel {
     } else {
       this.remove(backToResultsButton);
     }
+  }
+
+  Record buildRecord() {
+    String[] input = extractInputData();
+    if (InputValidator.isValidRecordType(input[0])) {
+      return buildValidatedRecord(input);
+    }
+    return null;
+  }
+
+  private Record buildValidatedRecord(String[] input) {
+    return new Record.Builder(input[0])
+        .title(input[1].isBlank() ? "" : input[1])
+        .type(InputValidator.isValidRecordType(input[2]) ? input[2] : null)
+        .lastName(InputValidator.isValidName(input[3]) ? input[3] : "")
+        .firstName(InputValidator.isValidName(input[4]) ? input[4] : "")
+        .date(InputValidator.isValidDate(input[5]) ? input[5] : "")
+        .category(input[6].isBlank() ? "" : input[6])
+        .summary(InputValidator.isValidSummaryLength(input[7]) ? input[7] : input[7].substring(0, 500))
+        .location(input[8].isBlank() ? "" : input[8])
+        .build();
+  }
+
+  private String[] extractInputData() {
+    String[] input = new String[textFields.length];
+    for (int i = 0; i < input.length; i++) {
+      input[i] = textFields[i].getText();
+    }
+    return input;
   }
 
   public abstract String getName();
