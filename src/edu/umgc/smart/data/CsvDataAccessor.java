@@ -78,6 +78,11 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public Record get(String referenceNumber) {
+		for (Record r : records) {
+			if (r.getReferenceNumber().equals(referenceNumber)) {
+				return r;
+			}
+		}
 		return null;
 	}
 
@@ -87,7 +92,14 @@ public class CsvDataAccessor implements DataAccessor {
 	}
 
 	@Override
-	public void save(Record r) {
+	public void add(Record r) {
+		if (null == get(r.getReferenceNumber())) {
+			records.add(r);
+		}
+	}
+
+	@Override
+	public void save() {
 		// Upon file close, saves the new Record info into the CSV file (File f)
 		File f = new File("Records.csv");
 		try (FileWriter fWriter = new FileWriter(f)) {
@@ -103,14 +115,19 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public void update(String referenceNumber, Record r) {
-		throw new UnsupportedOperationException();
+		Record target = get(referenceNumber);
+		if (null != target) {
+			delete(target);
+		}
+		add(r);
 	}
 
 	@Override
 	public void delete(Record r) {
-		for (Record i : records)
-			if (i == r)
-				records.remove(records.indexOf(r));
+		Record[] recordsCopy = records.toArray(new Record[0]);
+		for (int i = 0; i < recordsCopy.length; i++)
+			if (recordsCopy[i] == r)
+				records.remove(r);
 	}
 
 	public Record[] getRecordsByMainSearch(String searchTerm) {

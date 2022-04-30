@@ -32,7 +32,7 @@ public class CreateRecordPanel extends RecordCardPanel {
         LOGGER.info("Save - new record");
         Record newRecord = buildRecord();
         if (null != newRecord) {
-            cardView.dataAccessor.save(newRecord);
+            cardView.dataAccessor.add(newRecord);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Reference Number is not valid",
