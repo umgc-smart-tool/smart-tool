@@ -5,13 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
@@ -21,10 +22,12 @@ public abstract class RecordCardPanel extends CardPanel {
   private static final String[] fieldNames = Record.getHeaders().split(",");
 
   private CardView cardView;
+  private Record currentRecord;
 
-  private JButton saveButton = new JButton("Save");
+  private JButton activeSaveButton = new JButton("SAVE");
   private JButton deleteButton = new JButton("Delete");
   private JButton mainMenuButton = new JButton("Main Menu Search");
+  private JButton backToResultsButton = new JButton("Return to Results");
   private JLabel[] fieldLabels = new JLabel[fieldNames.length];
   private JTextField[] textFields = new JTextField[fieldNames.length];
   private JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
@@ -38,14 +41,15 @@ public abstract class RecordCardPanel extends CardPanel {
     addPanelComponents();
   }
 
-  RecordCardPanel(CardView cardView, Record currentRecord) {
+  RecordCardPanel(CardView cardView, Record r) {
     this(cardView);
+    currentRecord = r;
     textFields[0].setText(currentRecord.getReferenceNumber());
     textFields[1].setText(currentRecord.getTitle());
     textFields[2].setText(currentRecord.getDocumentType().toString());
     textFields[3].setText(currentRecord.getAuthorLastName());
     textFields[4].setText(currentRecord.getAuthorFirstName());
-    textFields[5].setText(currentRecord.getDocumentType().toString());
+    textFields[5].setText(currentRecord.getDate().toString());
     textFields[6].setText(currentRecord.getCategory());
     textFields[7].setText(currentRecord.getSummary());
     textFields[8].setText(currentRecord.getLocation());
@@ -59,36 +63,30 @@ public abstract class RecordCardPanel extends CardPanel {
   }
 
   private void initializeButtonActions() {
-    setMainMenuButtonAction(e -> cardView.setPanel(new SearchCardPanel(cardView)));
-    setSaveButtonAction(e -> LOGGER.info("Save Button pressed"));
-    setDeleteButtonAction(e -> LOGGER.info("Delete button pressed"));
+    setButtonAction(mainMenuButton, e -> cardView.setPanel(new SearchCardPanel(cardView)));
+    setButtonAction(deleteButton, e -> {
+      int deleteOption = JOptionPane.showConfirmDialog(null,
+          "Are you sure you want to delete this record?");
+      if (deleteOption == JOptionPane.YES_OPTION) {
+        LOGGER.info("Delete confirmed");
+        JOptionPane.showMessageDialog(null, "Deleting records is not yet implemented.");
+      } else {
+        LOGGER.info("Delete cancelled");
+      }
+    });
+    setButtonAction(backToResultsButton, e -> {
+      LOGGER.info("Back to results button pressed");
+      cardView.setPanel(new ResultsCardPanel(cardView));
+    });
   }
 
-  void setMainMenuButtonAction(ActionListener actionListener) {
-    setButtonAction(mainMenuButton, actionListener);
-  }
-
-  void setSaveButtonAction(ActionListener actionListener) {
-    setButtonAction(saveButton, (e -> {
-      LOGGER.warning("UNIMPLEMENTED! Action should be SAVE");
-      JOptionPane.showMessageDialog(
-          this,
-          "This feature has not yet been implemented.\nIt will be available in the final version",
-          "Feature Not Implemented",
-          JOptionPane.WARNING_MESSAGE);
-    }));
-
-  }
-
-  void setDeleteButtonAction(ActionListener actionListener) {
-    setButtonAction(deleteButton, (e -> {
-      LOGGER.warning("UNIMPLEMENTED! Action should be DELETE");
-      JOptionPane.showMessageDialog(
-          this,
-          "This feature has not yet been implemented.\nIt will be available in the final version",
-          "Feature Not Implemented",
-          JOptionPane.WARNING_MESSAGE);
-    }));
+  void setSaveButton(JButton button, ActionListener actionListener) {
+    constraints.insets = new Insets(10, 20, 10, 5);
+    constraints.gridx = 2;
+    button.addActionListener(actionListener);
+    this.remove(activeSaveButton);
+    this.add(button, constraints);
+    activeSaveButton = button;
   }
 
   private void setButtonAction(JButton button, ActionListener actionListener) {
@@ -109,7 +107,7 @@ public abstract class RecordCardPanel extends CardPanel {
       constraints.insets = new Insets(10, 50, 10, 5);
       this.add(fieldLabels[i], constraints);
       constraints.gridx = 1;
-      constraints.gridwidth = 2;
+      constraints.gridwidth = 3;
       constraints.insets = new Insets(10, 5, 10, 50);
       constraints.weightx = 0.2;
       if (fieldNames[i].equals("Record Type"))
@@ -125,12 +123,8 @@ public abstract class RecordCardPanel extends CardPanel {
     mainMenuButton.setForeground(Color.BLUE);
     this.add(mainMenuButton, constraints);
 
-    // CREATE
-    constraints.insets = new Insets(10, 20, 10, 5);
-    constraints.gridx = 1;
-    this.add(saveButton, constraints);
     constraints.insets = new Insets(10, 5, 10, 50);
-    constraints.gridx = 2;
+    constraints.gridx = 3;
     this.add(deleteButton, constraints);
   }
 
@@ -138,6 +132,25 @@ public abstract class RecordCardPanel extends CardPanel {
     for (int i = 0; i < fieldNames.length; i++) {
       textFields[i].setEditable(false);
       textFields[i].setBackground(Color.LIGHT_GRAY);
+    }
+  }
+
+  void enableModifyFields() {
+    for (int i = 0; i < fieldNames.length; i++) {
+      textFields[i].setEditable(true);
+      textFields[i].setBackground(Color.white);
+    }
+    textFields[5].setEditable(false);
+    textFields[5].setBackground(Color.LIGHT_GRAY);
+  }
+
+   void enableReturnButton(boolean enable) {
+    if (enable) {
+      constraints.insets = new Insets(10, 10, 10, 10);
+      constraints.gridx = 1;
+      this.add(backToResultsButton, constraints);
+    } else {
+      this.remove(backToResultsButton);
     }
   }
 
