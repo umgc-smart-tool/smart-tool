@@ -160,7 +160,7 @@ public abstract class RecordCardPanel extends CardPanel {
 
   Record buildRecord() {
     String[] input = extractInputData();
-    if (InputValidator.isValidRecordType(input[0])) {
+    if (InputValidator.isValidReferenceNumber(input[0])) {
       return buildValidatedRecord(input);
     }
     return null;
