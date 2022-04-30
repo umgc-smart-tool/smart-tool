@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -120,7 +119,7 @@ public class CsvDataAccessor implements DataAccessor {
 			if (i.getAuthorFirstName().contains(searchTerm) ||
 					i.getAuthorLastName().contains(searchTerm) ||
 					i.getCategory().contains(searchTerm) ||
-					i.getDate().toString().contains(searchTerm) ||
+					i.getDate().contains(searchTerm) ||
 					i.getDocumentType().toString().contains(searchTerm) ||
 					i.getLocation().contains(searchTerm) ||
 					i.getReferenceNumber().contains(searchTerm) ||
@@ -181,10 +180,10 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
-	public Record[] getRecordsByDate(Date date) {
+	public Record[] getRecordsByDate(String date) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getDate().equals(date)) {
+			if (i.getDate().contains(date)) {
 				arr.add(i);
 			}
 		}

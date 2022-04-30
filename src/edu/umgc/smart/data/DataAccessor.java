@@ -1,7 +1,6 @@
 package edu.umgc.smart.data;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
@@ -29,7 +28,7 @@ public interface DataAccessor extends Serializable {
 
   public Record[] getRecordsByAuthorLastName(String author);
 
-  public Record[] getRecordsByDate(Date date);
+  public Record[] getRecordsByDate(String date);
 
   public Record[] getRecordsByCategory(String category);
 

@@ -1,7 +1,6 @@
 package edu.umgc.smart.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  * Java Bean for passing information between Model, View, and Controller.
@@ -15,7 +14,7 @@ public class Record implements Serializable {
   private final RecordType documentType;
   private final String authorLastName;
   private final String authorFirstName;
-  private final Date date;
+  private final String date;
   private final String category;
   private final String summary;
   private final String location;
@@ -56,7 +55,7 @@ public class Record implements Serializable {
     return authorFirstName;
   }
 
-  public Date getDate() {
+  public String getDate() {
     return date;
   }
 
@@ -85,7 +84,7 @@ public class Record implements Serializable {
     sb.append(',');
     sb.append(authorFirstName);
     sb.append(',');
-    sb.append(date.toString());
+    sb.append(date);
     sb.append(',');
     sb.append(category);
     sb.append(',');
@@ -101,7 +100,7 @@ public class Record implements Serializable {
     private RecordType documentType;
     private String authorLastName;
     private String authorFirstName;
-    private Date date;
+    private String date;
     private String category;
     private String summary;
     private String location;
@@ -135,13 +134,8 @@ public class Record implements Serializable {
       return this;
     }
 
-    public Builder date(Date date) {
-      this.date = date;
-      return this;
-    }
-
     public Builder date(String date) {
-      this.date = Date.valueOf(date);
+      this.date = date;
       return this;
     }
 

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -137,9 +136,7 @@ public class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      // TODO: Get Date search properly working - remove use of Date object
-      // altogether?
-      Record[] records = cardView.dataAccessor.getRecordsByDate(Date.valueOf(searchFields[index].getText()));
+      Record[] records = cardView.dataAccessor.getRecordsByDate(searchFields[index].getText());
       cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
     }
   }

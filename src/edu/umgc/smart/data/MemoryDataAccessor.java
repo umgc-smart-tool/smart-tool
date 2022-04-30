@@ -1,6 +1,5 @@
 package edu.umgc.smart.data;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class MemoryDataAccessor implements DataAccessor {
         .type("Record")
         .lastName("Lastname")
         .firstName("Firstname")
-        .date(Date.valueOf("2021-10-15"))
+        .date("2021-10-15")
         .category("Finance")
         .summary("This report covers the finances for the 3rd quarter of 2021.")
         .location("/network/folder/reports/Q3")
@@ -96,7 +95,7 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public Record[] getRecordsByDate(Date date) {
+  public Record[] getRecordsByDate(String date) {
     return new Record[0];
   }
 
