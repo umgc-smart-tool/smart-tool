@@ -1,29 +1,32 @@
 package edu.umgc.smart.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.Insets;
-import java.util.Arrays;
+
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.Record;
 
-public class ResultsCardPanel extends CardPanel {
-
+public class ResultsCardPanel extends CardPanel{
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static Record[] records;
+    private static String searchTerm;
+    private static String searchTermField;
 
-    public ResultsCardPanel(CardView cardView, Record[] records, String searchTerm) {
+    public ResultsCardPanel(CardView cardView){
         JTextField searchField = new JTextField();
         JButton searchButton = new JButton("Search");
         JButton advancedSearchButton = new JButton("Advanced Search");
@@ -45,26 +48,28 @@ public class ResultsCardPanel extends CardPanel {
 
         // ---------- Add action listeners (functionality) to buttons ----------
         // Advanced Search Button
-        advancedSearchButton.addActionListener(e -> {
-            LOGGER.info("Advanced Search Button pressed");
-            cardView.setPanel(new AdvancedSearchCardPanel(cardView));
-        });
+        advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
 
         // Main Search Button
         searchButton.addActionListener(e -> {
             LOGGER.info("Search button pressed: " + searchField.getText());
-            cardView.setPanel(
-                    new ResultsCardPanel(cardView, cardView.searchFor(searchField.getText()), searchField.getText()));
+            if (searchField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Please enter a valid search term.",
+                        "Invalid Search", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Record[] recordsResult = cardView.dataAccessor.getRecordsByMainSearch(searchField.getText());
+                cardView.setPanel(new ResultsCardPanel(cardView, recordsResult, searchField.getText(),
+                        "All Fields"));
+            }
         });
 
         // Select Buttons for each Record
         for (int i = 0; i < selectButtons.length; i++) {
-            Record selectedRecord = records[i];
-            selectButtons[i].addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, selectedRecord)));
+            final int finalI = i;
+            selectButtons[i].addActionListener(e -> cardView.setPanel(new ViewRecordCardPanel(cardView, records[finalI])));
         }
 
-        // ---------- Add text field, label and buttons to search panel, and panel to
-        // frame ----------
+        // ---------- Add text field, label and buttons to search panel, and panel to frame ----------
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.insets = new Insets(10, 10, 10, 10);
@@ -89,16 +94,16 @@ public class ResultsCardPanel extends CardPanel {
 
         // ---------- Setup elements for resultsPanel ----------
         resultsPanel.setLayout(new GridLayout(records.length, 1));
-        resultsPanel.setBorder(BorderFactory.createTitledBorder("Results for: " + searchTerm));
+        resultsPanel.setBorder(BorderFactory.createTitledBorder("Results for: \"" + searchTerm + "\" in field: " +
+                searchTermField));
 
         // Add results to resultsPanel
         if (records.length == 0) {
-            JLabel noResultLabel = new JLabel("There are no results for: \"" + searchTerm + "\"",
-                    SwingConstants.CENTER);
+            JLabel noResultLabel =
+                    new JLabel("There are no results for: \"" + searchTerm + "\" in the field: " +
+                            searchTermField, SwingConstants.CENTER);
             resultsPanel.add(noResultLabel);
         } else {
-            String printedRecords = Arrays.toString(records);
-            LOGGER.info(printedRecords);
             for (int i = 0; i < records.length; i++) {
                 JPanel recordPanel = new JPanel();
                 recordPanel.setLayout(new GridLayout(1, 4));
@@ -110,13 +115,33 @@ public class ResultsCardPanel extends CardPanel {
                 recordPanel.add(new JLabel(records[i].getTitle()));
                 recordPanel.add(new JLabel(records[i].getDate().toString()));
                 resultsPanel.add(recordPanel);
-            }
+            }// End for loop
         } // End if-else
         this.add(resultScrollPane, BorderLayout.CENTER);
-    }
+    }// End ResultsCardPanel(CardView cardView) constructor
+
+    public ResultsCardPanel(CardView cardView, Record[] recordsArray, String searchTermItem, String searchFieldItem){
+        ResultsCardPanel.setSearchTerm(searchTermItem);
+        ResultsCardPanel.setRecordsArray(recordsArray);
+        ResultsCardPanel.setSearchFieldItem(searchFieldItem);
+        this.setLayout(new BorderLayout());
+        this.add(new ResultsCardPanel(cardView), BorderLayout.CENTER);
+    }// End ResultsCardPanel(CardView cardView, Record[] recordsArray, String searchTermItem) constructor
 
     @Override
     public String getName() {
         return "Search Results";
+    }
+
+    private static void setSearchTerm(String searchTerm) {
+        ResultsCardPanel.searchTerm = searchTerm;
+    }
+
+    private static void setRecordsArray(Record[] records) {
+        ResultsCardPanel.records = records.clone();
+    }
+
+    private static void setSearchFieldItem(String searchFieldItem) {
+        ResultsCardPanel.searchTermField = searchFieldItem;
     }
 }

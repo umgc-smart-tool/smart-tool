@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
@@ -28,6 +29,7 @@ import edu.umgc.smart.model.RecordType;
 
 public class CsvDataAccessor implements DataAccessor {
 	private static final long serialVersionUID = 1564806799199445630L;
+	Random randNum = new Random(); // Random number generator for more diverse test Record set
 
 	private List<Record> records = new ArrayList<>();
 
@@ -35,7 +37,7 @@ public class CsvDataAccessor implements DataAccessor {
 		int numberOfRecords = 10;
 		for (int i = 0; i < numberOfRecords; i++) {
 			records.add(new Record.Builder("R-22-" + i)
-					.title("Title " + i)
+					.title("Title " + randNum.nextInt(20))
 					.type("MEMO")
 					.lastName("Longo")
 					.firstName("Josh")
@@ -156,13 +158,23 @@ public class CsvDataAccessor implements DataAccessor {
 				arr.add(i);
 			}
 		}
-	return arr.toArray(new Record[0]);
+		return arr.toArray(new Record[0]);
 	}
 
-	public Record[] getRecordsByAuthor(String author) {
+	public Record[] getRecordsByAuthorFirstName(String author) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
-			if (i.getAuthorFirstName().contains(author) || i.getAuthorLastName().contains(author)) {
+			if (i.getAuthorFirstName().contains(author)) {
+				arr.add(i);
+			}
+		}
+		return arr.toArray(new Record[0]);
+	}
+
+	public Record[] getRecordsByAuthorLastName(String author) {
+		List<Record> arr = new ArrayList<>();
+		for (Record i : records) {
+			if (i.getAuthorLastName().contains(author)) {
 				arr.add(i);
 			}
 		}
@@ -176,7 +188,7 @@ public class CsvDataAccessor implements DataAccessor {
 				arr.add(i);
 			}
 		}
-	return arr.toArray(new Record[0]);
+		return arr.toArray(new Record[0]);
 	}
 
 	public Record[] getRecordsByCategory(String category) {

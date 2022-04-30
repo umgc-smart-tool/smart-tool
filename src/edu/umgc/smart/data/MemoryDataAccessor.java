@@ -86,7 +86,12 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public Record[] getRecordsByAuthor(String author) {
+  public Record[] getRecordsByAuthorFirstName(String author) {
+    return new Record[0];
+  }
+
+  @Override
+  public Record[] getRecordsByAuthorLastName(String author) {
     return new Record[0];
   }
 
