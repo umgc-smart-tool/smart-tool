@@ -7,63 +7,43 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
-/*
- * To do:
- * 		get()
- * 		update()
- *
- * Conflicts exist in:
- * 		createRecord() - This is due to the Record constructor.
- * 			I can adjust this however you guys think is best - either in the Record class or here.
- *
- * 		getRecordsByMainSearch() - Clashes with file types of Date and RecordType.
- * 								   I suspect these will rectify themselves once it's added on Git,
- * 								   but let me know if I need to make changes here.
- */
-
 public class CsvDataAccessor implements DataAccessor {
 	private static final long serialVersionUID = 1564806799199445630L;
-	Random randNum = new Random(); // Random number generator for more diverse test Record set
+
+	private static final String RECORDS_CSV = "Records.csv";
 
 	private List<Record> records = new ArrayList<>();
 
 	public CsvDataAccessor() {
-		int numberOfRecords = 10;
-		for (int i = 0; i < numberOfRecords; i++) {
-			records.add(new Record.Builder("R-22-" + i)
-					.title("Title " + randNum.nextInt(20))
-					.type("MEMO")
-					.lastName("Longo")
-					.firstName("Josh")
-					.date("2022-04-16")
-					.category("Finance")
-					.summary("Summary " + i)
-					.location("Location")
-					.build());
+		loadFile();
+	}
+
+	private void loadFile() {
+		try (BufferedReader br = new BufferedReader(new FileReader(RECORDS_CSV))) {
+			parseRecordsFromFile(br);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void loadFile() {
-		String line = "";
+	private void parseRecordsFromFile(BufferedReader br) throws IOException {
+		String line;
 		String delim = ",";
-		try (BufferedReader br = new BufferedReader(new FileReader("Records.csv"))) {
-			while ((line = br.readLine()) != null) {
-				String[] employee = line.split(delim);
-				// Calls createRecord function and adds the new Record to the records ArrayList
-				records.add(createRecord(employee));
-			} // end while
-		} // end try
-		catch (IOException e) {
-			e.printStackTrace();
-		} // end catch
-	} // end loadFile()
+		while ((line = br.readLine()) != null) {
+			if (line.equals(Record.getHeaders())) {
+				continue;
+			}
+			String[] recordData = line.split(delim);
+			records.add(createRecord(recordData));
+		}
+	}
 
-	public Record createRecord(String[] params) {
+	private Record createRecord(String[] params) {
 		return new Record.Builder(params[0])
 				.title(params[1])
 				.type(params[2])
@@ -74,7 +54,7 @@ public class CsvDataAccessor implements DataAccessor {
 				.summary(params[7])
 				.location(params[8])
 				.build();
-	} // end createRecord()
+	}
 
 	@Override
 	public Record get(String referenceNumber) {
@@ -100,19 +80,21 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public void save() {
-		// Upon file close, saves the new Record info into the CSV file (File f)
-		File f = new File("Records.csv");
+		File f = new File(RECORDS_CSV);
 		try (FileWriter fWriter = new FileWriter(f)) {
-			fWriter.write(Record.getHeaders());
-			fWriter.append("\n");
-			for (Record i : records) {
-				fWriter.append(String.join(",", i.toString()));
-				fWriter.append("\n");
-			}
-			fWriter.flush();
+			writeRecordsToCsv(fWriter);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} // end catch
+		}
+	}
+
+	private void writeRecordsToCsv(FileWriter fWriter) throws IOException {
+		fWriter.write(Record.getHeaders());
+		for (Record i : records) {
+			fWriter.append("\n");
+			fWriter.append(String.join(",", i.toString()));
+		}
+		fWriter.flush();
 	}
 
 	@Override
@@ -132,6 +114,7 @@ public class CsvDataAccessor implements DataAccessor {
 				records.remove(r);
 	}
 
+	@Override
 	public Record[] getRecordsByMainSearch(String searchTerm) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -149,6 +132,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByReferenceNum(String referenceNumber) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -159,6 +143,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByTitle(String title) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -169,6 +154,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByRecordType(RecordType recordType) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -179,6 +165,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByAuthorFirstName(String author) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -189,6 +176,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByAuthorLastName(String author) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -199,6 +187,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByDate(String date) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -209,6 +198,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsByCategory(String category) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
@@ -219,6 +209,7 @@ public class CsvDataAccessor implements DataAccessor {
 		return arr.toArray(new Record[0]);
 	}
 
+	@Override
 	public Record[] getRecordsBySummary(String summary) {
 		List<Record> arr = new ArrayList<>();
 		for (Record i : records) {
