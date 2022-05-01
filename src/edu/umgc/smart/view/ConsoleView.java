@@ -2,29 +2,32 @@ package edu.umgc.smart.view;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.umgc.smart.model.Record;
 
 public class ConsoleView extends View {
 
-  private Scanner scanner;
-
-  public ConsoleView() {
-    this.scanner = new Scanner(System.in);
-  }
+  private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+  private final transient Scanner scanner = new Scanner(System.in);
 
   public void start() {
-    System.out.println("Hello World!");
-    System.out.println("\nCurrent Records:");
-    printRecords();
+    String message = String.format("%nCurrent Records:%n%s", getFormattedRecords());
+    LOGGER.log(Level.INFO, message);
     scanner.nextLine();
   }
 
-  private void printRecords() {
-    List<Record> records = this.dataAccessor.getAll();
-    System.out.println(Record.getHeaders());
-    records.forEach((r) -> {
-      System.out.println(r);
+  private String getFormattedRecords() {
+    List<Record> records = List.of(this.dataAccessor.getAll());
+    StringBuilder sb = new StringBuilder();
+    sb.append(Record.getHeaders());
+    sb.append('\n');
+    records.forEach(r -> {
+      sb.append(r);
+      sb.append('\n');
     });
+    return sb.toString();
   }
 
 }
