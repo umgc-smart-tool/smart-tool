@@ -103,6 +103,8 @@ public class CsvDataAccessor implements DataAccessor {
 		// Upon file close, saves the new Record info into the CSV file (File f)
 		File f = new File("Records.csv");
 		try (FileWriter fWriter = new FileWriter(f)) {
+			fWriter.write(Record.getHeaders());
+			fWriter.append("\n");
 			for (Record i : records) {
 				fWriter.append(String.join(",", i.toString()));
 				fWriter.append("\n");
