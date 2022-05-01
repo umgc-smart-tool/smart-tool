@@ -13,10 +13,13 @@ public class ModifyRecordCardPanel extends RecordCardPanel {
 
     ModifyRecordCardPanel(CardView cardView, Record currentRecord) {
         super(cardView, currentRecord);
-        enableReturnButton(true);
+        enableReturnButton(false);
         setSaveButton(
                 new JButton("Save Changes"),
-                e -> saveModifications(cardView, currentRecord));
+                e -> {
+                    saveModifications(cardView, currentRecord);
+                    cardView.setPanel(new ViewRecordCardPanel(cardView, currentRecord));
+                });
         enableModifyFields();
     }
 

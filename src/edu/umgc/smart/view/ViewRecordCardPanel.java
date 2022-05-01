@@ -8,7 +8,7 @@ public class ViewRecordCardPanel extends RecordCardPanel {
 
   public ViewRecordCardPanel(CardView cardView, Record currentRecord) {
     super(cardView, currentRecord);
-    enableReturnButton(true);
+    enableReturnButton(false);
     setSaveButton(new JButton("Modify"), e -> cardView.setPanel(new ModifyRecordCardPanel(cardView, currentRecord)));
     disableAllFields();
   }
