@@ -49,7 +49,7 @@ public abstract class RecordCardPanel extends CardPanel {
     textFields[2].setText(currentRecord.getDocumentType().toString());
     textFields[3].setText(currentRecord.getAuthorLastName());
     textFields[4].setText(currentRecord.getAuthorFirstName());
-    textFields[5].setText(currentRecord.toString());
+    textFields[5].setText(currentRecord.getDate());
     textFields[6].setText(currentRecord.getCategory());
     textFields[7].setText(currentRecord.getSummary());
     textFields[8].setText(currentRecord.getLocation());
@@ -69,7 +69,8 @@ public abstract class RecordCardPanel extends CardPanel {
           "Are you sure you want to delete this record?");
       if (deleteOption == JOptionPane.YES_OPTION) {
         LOGGER.info("Delete confirmed");
-        JOptionPane.showMessageDialog(null, "Deleting records is not yet implemented.");
+        cardView.dataAccessor.delete(currentRecord);
+        cardView.setPanel(new SearchCardPanel(cardView));
       } else {
         LOGGER.info("Delete cancelled");
       }
@@ -161,22 +162,18 @@ public abstract class RecordCardPanel extends CardPanel {
   Record buildRecord() {
     String[] input = extractInputData();
     if (InputValidator.isValidReferenceNumber(input[0])) {
-      return buildValidatedRecord(input);
+      return new Record.Builder(input[0])
+          .title(input[1])
+          .type(input[2])
+          .lastName(input[3])
+          .firstName(input[4])
+          .date(input[5])
+          .category(input[6])
+          .summary(input[7])
+          .location(input[8])
+          .build();
     }
     return null;
-  }
-
-  private Record buildValidatedRecord(String[] input) {
-    return new Record.Builder(input[0])
-        .title(input[1].isBlank() ? "" : input[1])
-        .type(InputValidator.isValidRecordType(input[2]) ? input[2] : null)
-        .lastName(InputValidator.isValidName(input[3]) ? input[3] : "")
-        .firstName(InputValidator.isValidName(input[4]) ? input[4] : "")
-        .date(InputValidator.isValidDate(input[5]) ? input[5] : "")
-        .category(input[6].isBlank() ? "" : input[6])
-        .summary(InputValidator.isValidSummaryLength(input[7]) ? input[7] : input[7].substring(0, 500))
-        .location(input[8].isBlank() ? "" : input[8])
-        .build();
   }
 
   private String[] extractInputData() {

@@ -42,8 +42,13 @@ public class MemoryDataAccessor implements DataAccessor {
   }
 
   @Override
-  public void save(Record r) {
+  public void add(Record r) {
     this.records.add(r);
+  }
+
+  @Override
+  public void save() {
+    this.records.sort(null);
   }
 
   @Override

@@ -35,6 +35,7 @@ public class CardView extends View {
     frame.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent windowEvent) {
+        dataAccessor.save();
         LOGGER.log(Level.INFO, "Exiting Program");
       }
     });

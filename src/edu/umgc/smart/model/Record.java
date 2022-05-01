@@ -120,22 +120,38 @@ public class Record implements Serializable {
     }
 
     public Builder type(String type) {
-      this.documentType = RecordType.valueOf(type);
+      if (InputValidator.isValidRecordType(type.toUpperCase())) {
+        this.documentType = RecordType.valueOf(type.toUpperCase());
+      } else {
+        this.documentType = RecordType.MEMO;
+      }
       return this;
     }
 
     public Builder lastName(String lastName) {
-      this.authorLastName = lastName;
+      if (InputValidator.isValidName(lastName)) {
+        this.authorLastName = lastName;
+      } else {
+        this.authorLastName = "";
+      }
       return this;
     }
 
     public Builder firstName(String firstName) {
-      this.authorFirstName = firstName;
+      if (InputValidator.isValidName(firstName)) {
+        this.authorFirstName = firstName;
+      } else {
+        this.authorFirstName = "";
+      }
       return this;
     }
 
     public Builder date(String date) {
-      this.date = date;
+      if (InputValidator.isValidDate(date)) {
+        this.date = date;
+      } else {
+        this.date = "";
+      }
       return this;
     }
 
@@ -145,7 +161,11 @@ public class Record implements Serializable {
     }
 
     public Builder summary(String summary) {
-      this.summary = summary;
+      if (InputValidator.isValidSummaryLength(summary)) {
+        this.summary = summary;
+      } else {
+        this.summary = summary.substring(0, 500);
+      }
       return this;
     }
 

@@ -10,7 +10,9 @@ public interface DataAccessor extends Serializable {
 
   public Record[] getAll();
 
-  public void save(Record r);
+  public void add(Record r);
+
+  public void save();
 
   public void update(String referenceNumber, Record r);
 

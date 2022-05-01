@@ -34,13 +34,17 @@ public class ResultsCardPanel extends CardPanel {
     private JButton[] selectButtons;
 
     public ResultsCardPanel(CardView cardView) {
-        this(cardView, new Record[0], "", "");
+        initializeResultsCardPanel(cardView);
     }
 
     public ResultsCardPanel(CardView cardView, Record[] recordsArray, String searchTermItem, String searchFieldItem) {
         ResultsCardPanel.setSearchTerm(searchTermItem);
         ResultsCardPanel.setRecordsArray(recordsArray);
         ResultsCardPanel.setSearchFieldItem(searchFieldItem);
+        initializeResultsCardPanel(cardView);
+    }
+
+    private void initializeResultsCardPanel(CardView cardView) {
         this.setLayout(new BorderLayout());
         initializeSearchPanel(cardView);
         initializeResultsPanel();

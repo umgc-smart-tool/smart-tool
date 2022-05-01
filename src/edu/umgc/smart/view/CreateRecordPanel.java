@@ -14,11 +14,12 @@ public class CreateRecordPanel extends RecordCardPanel {
         super(cardView);
         enableReturnButton(false);
         setSaveButton(
-                new JButton("Save Button Pressed"),
+                new JButton("Save"),
                 e -> saveRecord(cardView));
     }
 
     private void saveRecord(CardView cardView) {
+        LOGGER.info("Save button pressed");
         int saveOption = JOptionPane.showConfirmDialog(null,
                 "Do you want to save this record?");
         if (saveOption == JOptionPane.YES_OPTION) {
@@ -32,7 +33,8 @@ public class CreateRecordPanel extends RecordCardPanel {
         LOGGER.info("Save - new record");
         Record newRecord = buildRecord();
         if (null != newRecord) {
-            cardView.dataAccessor.save(newRecord);
+            cardView.dataAccessor.add(newRecord);
+            cardView.setPanel(new ViewRecordCardPanel(cardView, newRecord));
         } else {
             JOptionPane.showMessageDialog(this,
                     "Reference Number is not valid",
