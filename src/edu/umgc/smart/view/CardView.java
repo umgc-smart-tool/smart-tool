@@ -12,6 +12,19 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+/**
+ * Javax Swing GUI Implementation.
+ *
+ * This version of a GUI uses the CardLayout in order to swap panels in and out
+ * without needing to recreate the main frame/window. While not the fastest, as
+ * panels are created each time they are needed, the delay is not noticable.
+ *
+ * Since the frame is made visible when the start() method is called, it runs in
+ * its own event thread.
+ *
+ * When the window is closed, the application also closes, but not before invoking
+ * the save() method of its DataAccessor.
+ */
 public class CardView extends View {
   private static final long serialVersionUID = 479582524176873805L;
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -25,8 +38,7 @@ public class CardView extends View {
   public CardView() {
     mainPane = frame.getContentPane();
     mainPane.setLayout(new CardLayout());
-    currentPanel = new SearchCardPanel(this);
-    mainPane.add(currentPanel);
+    setPanel(new SearchCardPanel(this));
 
     frame.setSize(new Dimension(750, 500));
     frame.setResizable(false);
@@ -39,15 +51,15 @@ public class CardView extends View {
         LOGGER.log(Level.INFO, "Exiting Program");
       }
     });
-    frame.setTitle(String.format("SMART Tool - %s [BETA]", "SEARCH"));
-    frame.setVisible(true);
   }
 
   public void setPanel(CardPanel panel) {
     mainPane.add(panel);
-    mainPane.remove(currentPanel);
+    if (null != currentPanel) {
+      mainPane.remove(currentPanel);
+    }
     currentPanel = panel;
-    frame.setTitle(String.format("SMART Tool - %s [BETA]", panel.getName()));
+    frame.setTitle(String.format("SMART Tool - %s", panel.getName()));
   }
 
   public void setTitle(String title) {
@@ -55,8 +67,6 @@ public class CardView extends View {
   }
 
   public void start() {
-    SwingUtilities.invokeLater(() -> {
-      // Do something
-    });
+    SwingUtilities.invokeLater(() -> frame.setVisible(true));
   }
 }

@@ -19,7 +19,13 @@ import javax.swing.JTextField;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
-public class AdvancedSearchCardPanel extends CardPanel {
+/**
+ * Advanced Search Card Panel.
+ *
+ * This class creates the panel used for performing searches based on a specific
+ * field. Only searches against a single field can be performed at a time.
+ */
+class AdvancedSearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private static final String[] fieldNames = Record.getHeaders().split(",");

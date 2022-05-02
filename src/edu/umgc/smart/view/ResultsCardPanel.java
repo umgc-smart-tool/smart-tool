@@ -20,7 +20,16 @@ import javax.swing.SwingConstants;
 
 import edu.umgc.smart.model.Record;
 
-public class ResultsCardPanel extends CardPanel {
+/**
+ * Results Card Panel
+ *
+ * Displays results of a search, if any. In the event that no results are
+ * returned, the user is notified as such.  Further searches can be run from
+ * this panel, as well.
+ *
+ * Each returned search result has an associated button to view the record details.
+ */
+class ResultsCardPanel extends CardPanel {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static Record[] records;
     private static String searchTerm;

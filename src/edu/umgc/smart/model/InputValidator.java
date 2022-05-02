@@ -1,5 +1,12 @@
 package edu.umgc.smart.model;
 
+/**
+ * Static-Only Data Validation Class.
+ *
+ * This class provides static-only methods for validating data for Record fields.
+ * Any other object in this application can used the methods in the class to
+ * validate data before creating a Record.
+ */
 public final class InputValidator {
 
   private InputValidator() {
@@ -37,6 +44,6 @@ public final class InputValidator {
     return input.length() < 501;
   }
 
-  
+
 
 }

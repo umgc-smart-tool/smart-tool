@@ -4,7 +4,13 @@ import javax.swing.JButton;
 
 import edu.umgc.smart.model.Record;
 
-public class ViewRecordCardPanel extends RecordCardPanel {
+/**
+ * View Record Card Panel
+ *
+ * Provides the user with a detailed un-editable view of a single record.
+ * Buttons are provided for enabling modification or deletion of the record.
+ */
+class ViewRecordCardPanel extends RecordCardPanel {
 
   public ViewRecordCardPanel(CardView cardView, Record currentRecord) {
     super(cardView, currentRecord);

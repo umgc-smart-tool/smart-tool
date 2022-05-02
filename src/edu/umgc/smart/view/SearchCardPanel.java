@@ -3,18 +3,24 @@ package edu.umgc.smart.view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import edu.umgc.smart.model.Record;
 
+/**
+ * Search Card Panel
+ *
+ * Allows the user to search records for any instance of the search term.
+ * A button to move to the Create Record panel is also provided.
+ */
 public class SearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -47,7 +53,7 @@ public class SearchCardPanel extends CardPanel {
 
     searchButton.addActionListener(searchAction);
     searchBoxField.addActionListener(searchAction);
-    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordPanel(cardView)));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordCardPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
   }
 

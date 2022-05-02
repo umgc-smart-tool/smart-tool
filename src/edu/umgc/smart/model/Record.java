@@ -3,7 +3,12 @@ package edu.umgc.smart.model;
 import java.io.Serializable;
 
 /**
- * Java Bean for passing information between Model, View, and Controller.
+ * Java Class solely used for passing information between Model, View, and Controller.
+ *
+ * An internal Builder class is used for constructing Records. This Builder class
+ * must be used as the Record constructor is private only. The Builder class
+ * allows for "partial" data to be submitted for creation while providing default
+ * data for a functioning Record.
  */
 public class Record implements Serializable {
   private static final long serialVersionUID = 600597679460063835L;
@@ -96,14 +101,14 @@ public class Record implements Serializable {
 
   public static class Builder {
     private final String referenceNumber;
-    private String title;
-    private RecordType documentType;
-    private String authorLastName;
-    private String authorFirstName;
-    private String date;
-    private String category;
-    private String summary;
-    private String location;
+    private String title = "";
+    private RecordType documentType = RecordType.MEMO;
+    private String authorLastName = "";
+    private String authorFirstName = "";
+    private String date = "";
+    private String category = "";
+    private String summary = "";
+    private String location = "";
 
     public Builder(String referenceNumber) {
       this.referenceNumber = referenceNumber;
@@ -122,8 +127,6 @@ public class Record implements Serializable {
     public Builder type(String type) {
       if (InputValidator.isValidRecordType(type.toUpperCase())) {
         this.documentType = RecordType.valueOf(type.toUpperCase());
-      } else {
-        this.documentType = RecordType.MEMO;
       }
       return this;
     }
@@ -131,8 +134,6 @@ public class Record implements Serializable {
     public Builder lastName(String lastName) {
       if (InputValidator.isValidName(lastName)) {
         this.authorLastName = lastName;
-      } else {
-        this.authorLastName = "";
       }
       return this;
     }
@@ -140,8 +141,6 @@ public class Record implements Serializable {
     public Builder firstName(String firstName) {
       if (InputValidator.isValidName(firstName)) {
         this.authorFirstName = firstName;
-      } else {
-        this.authorFirstName = "";
       }
       return this;
     }
@@ -149,8 +148,6 @@ public class Record implements Serializable {
     public Builder date(String date) {
       if (InputValidator.isValidDate(date)) {
         this.date = date;
-      } else {
-        this.date = "";
       }
       return this;
     }
@@ -163,7 +160,7 @@ public class Record implements Serializable {
     public Builder summary(String summary) {
       if (InputValidator.isValidSummaryLength(summary)) {
         this.summary = summary;
-      } else {
+      } else if (summary.length() > 0) {
         this.summary = summary.substring(0, 500);
       }
       return this;
