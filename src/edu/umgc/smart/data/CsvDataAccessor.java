@@ -13,12 +13,20 @@ import java.util.Map;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
+/**
+ * A flat-file-based DataAccessor.
+ *
+ * This class loads a CSV file of records into a HashMap, if the file exists.
+ * While the application is running, changes made to the data are saved to file,
+ * such as add, update, and delete operations.  This ensures that all changes
+ * are persistent.
+ */
 public class CsvDataAccessor implements DataAccessor {
 	private static final long serialVersionUID = 1564806799199445630L;
 
 	private static final String RECORDS_CSV = "Records.csv";
 
-	private Map<String, Record> records = new HashMap<>();
+	private final Map<String, Record> records = new HashMap<>();
 
 	public CsvDataAccessor() {
 		loadFile();

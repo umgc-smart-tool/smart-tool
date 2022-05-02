@@ -15,6 +15,12 @@ import javax.swing.SwingConstants;
 
 import edu.umgc.smart.model.Record;
 
+/**
+ * Search Card Panel
+ *
+ * Allows the user to search records for any instance of the search term.
+ * A button to move to the Create Record panel is also provided.
+ */
 public class SearchCardPanel extends CardPanel {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

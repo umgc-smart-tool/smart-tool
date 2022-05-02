@@ -5,6 +5,14 @@ import edu.umgc.smart.data.DataAccessor;
 import edu.umgc.smart.view.CardView;
 import edu.umgc.smart.view.View;
 
+/**
+ * The application runner.
+ *
+ * This class instantiates the View and DataAccessor objects to be used in the application.
+ * The instantiated objects are then used to instantiate the actual application.
+ * Finally, the application is started along with the appropriate view.
+ *
+ */
 public class App {
   private View view;
 

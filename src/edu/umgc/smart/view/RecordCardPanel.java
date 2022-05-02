@@ -17,7 +17,14 @@ import edu.umgc.smart.model.InputValidator;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
-public abstract class RecordCardPanel extends CardPanel {
+/**
+ * Record Card Panel
+ *
+ * Provides the base layout and components for all Record Card Panels, namely
+ * create, modify, and view. Helper methods for enabling or disabling fields
+ * based on view are provided so the respective classes can call as needed.
+ */
+abstract class RecordCardPanel extends CardPanel {
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private static final String[] fieldNames = Record.getHeaders().split(",");
 

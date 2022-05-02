@@ -7,7 +7,15 @@ import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.Record;
 
-public class CreateRecordCardPanel extends RecordCardPanel {
+/**
+ * Create Record Card Panel
+ *
+ * This class is used for creating a brand new record, which must have a unique
+ * reference number in order to be created. Any other fields will be set to
+ * default values if not valid.  To ensure the user is aware of the data stored
+ * in the saved record, the View Record Card Panel for the new record is displayed.
+ */
+class CreateRecordCardPanel extends RecordCardPanel {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     CreateRecordCardPanel(CardView cardView) {

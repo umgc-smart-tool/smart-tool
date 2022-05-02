@@ -7,7 +7,15 @@ import edu.umgc.smart.model.Record;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-public class ModifyRecordCardPanel extends RecordCardPanel {
+/**
+ * Modify Record Card Panel
+ *
+ * This card panel provides the user with the means of modifying or deleting an
+ * existing record. The reference number and date cannot be manually changed.
+ * If any of the other fields use invalid data, they will be set to default
+ * values.
+ */
+class ModifyRecordCardPanel extends RecordCardPanel {
     private String name = "Modify Record";
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
