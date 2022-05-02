@@ -38,8 +38,7 @@ public class CardView extends View {
   public CardView() {
     mainPane = frame.getContentPane();
     mainPane.setLayout(new CardLayout());
-    currentPanel = new SearchCardPanel(this);
-    mainPane.add(currentPanel);
+    setPanel(new SearchCardPanel(this));
 
     frame.setSize(new Dimension(750, 500));
     frame.setResizable(false);
@@ -52,12 +51,13 @@ public class CardView extends View {
         LOGGER.log(Level.INFO, "Exiting Program");
       }
     });
-    frame.setTitle(String.format("SMART Tool - %s", "SEARCH"));
   }
 
   public void setPanel(CardPanel panel) {
     mainPane.add(panel);
-    mainPane.remove(currentPanel);
+    if (null != currentPanel) {
+      mainPane.remove(currentPanel);
+    }
     currentPanel = panel;
     frame.setTitle(String.format("SMART Tool - %s", panel.getName()));
   }
