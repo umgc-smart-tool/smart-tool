@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.Record;
 
-public class CreateRecordPanel extends RecordCardPanel {
+public class CreateRecordCardPanel extends RecordCardPanel {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    CreateRecordPanel(CardView cardView) {
+    CreateRecordCardPanel(CardView cardView) {
         super(cardView);
         enableReturnButton(false);
         setSaveButton(
@@ -33,13 +33,25 @@ public class CreateRecordPanel extends RecordCardPanel {
         LOGGER.info("Save - new record");
         Record newRecord = buildRecord();
         if (null != newRecord) {
-            cardView.dataAccessor.add(newRecord);
-            cardView.setPanel(new ViewRecordCardPanel(cardView, newRecord));
+            saveNewRecordIfHasUniqueReferenceNumber(cardView, newRecord);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Reference Number is not valid",
                     "Invalid Record",
                     JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void saveNewRecordIfHasUniqueReferenceNumber(CardView cardView, Record newRecord) {
+        if (null == cardView.dataAccessor.get(newRecord.getReferenceNumber())) {
+            cardView.dataAccessor.add(newRecord);
+            cardView.setPanel(new ViewRecordCardPanel(cardView, newRecord));
+        } else {
+            String message = "Could not create record.\nA record with the provided reference number already exists.";
+            JOptionPane.showMessageDialog(this,
+                    message,
+                    "Operation Failed",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }
 

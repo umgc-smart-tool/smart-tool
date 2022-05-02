@@ -47,7 +47,7 @@ public class SearchCardPanel extends CardPanel {
 
     searchButton.addActionListener(searchAction);
     searchBoxField.addActionListener(searchAction);
-    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordPanel(cardView)));
+    createRecordButton.addActionListener(e -> cardView.setPanel(new CreateRecordCardPanel(cardView)));
     advancedSearchButton.addActionListener(e -> cardView.setPanel(new AdvancedSearchCardPanel(cardView)));
   }
 
