@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
@@ -16,7 +18,7 @@ public class CsvDataAccessor implements DataAccessor {
 
 	private static final String RECORDS_CSV = "Records.csv";
 
-	private List<Record> records = new ArrayList<>();
+	private Map<String, Record> records = new HashMap<>();
 
 	public CsvDataAccessor() {
 		loadFile();
@@ -33,13 +35,15 @@ public class CsvDataAccessor implements DataAccessor {
 
 	private void parseRecordsFromFile(BufferedReader br) throws IOException {
 		String line;
-		String delim = ",";
 		while ((line = br.readLine()) != null) {
-			if (line.equals(Record.getHeaders())) {
-				continue;
-			}
-			String[] recordData = line.split(delim);
-			records.add(createRecord(recordData));
+			addRecordToMap(line);
+		}
+	}
+
+	private void addRecordToMap(String line) {
+		if (!line.equals(Record.getHeaders())) {
+			String[] recordData = line.split(",");
+			records.put(recordData[0], createRecord(recordData));
 		}
 	}
 
@@ -58,24 +62,18 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public Record get(String referenceNumber) {
-		for (Record r : records) {
-			if (r.getReferenceNumber().equals(referenceNumber)) {
-				return r;
-			}
-		}
-		return null;
+		return records.get(referenceNumber);
 	}
 
 	@Override
 	public Record[] getAll() {
-		return records.toArray(new Record[0]);
+		return records.values().toArray(new Record[0]);
 	}
 
 	@Override
 	public void add(Record r) {
-		if (null == get(r.getReferenceNumber())) {
-			records.add(r);
-		}
+		records.putIfAbsent(r.getReferenceNumber(), r);
+		save();
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class CsvDataAccessor implements DataAccessor {
 
 	private void writeRecordsToCsv(FileWriter fWriter) throws IOException {
 		fWriter.write(Record.getHeaders());
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			fWriter.append("\n");
 			fWriter.append(String.join(",", i.toString()));
 		}
@@ -99,34 +97,21 @@ public class CsvDataAccessor implements DataAccessor {
 
 	@Override
 	public void update(String referenceNumber, Record r) {
-		Record target = get(referenceNumber);
-		if (null != target) {
-			delete(target);
-		}
-		add(r);
+		records.replace(referenceNumber, r);
+		save();
 	}
 
 	@Override
 	public void delete(Record r) {
-		Record[] recordsCopy = records.toArray(new Record[0]);
-		for (int i = 0; i < recordsCopy.length; i++)
-			if (recordsCopy[i] == r)
-				records.remove(r);
+		records.remove(r.getReferenceNumber());
+		save();
 	}
 
 	@Override
 	public Record[] getRecordsByMainSearch(String searchTerm) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
-			if (i.getAuthorFirstName().contains(searchTerm) ||
-					i.getAuthorLastName().contains(searchTerm) ||
-					i.getCategory().contains(searchTerm) ||
-					i.getDate().contains(searchTerm) ||
-					i.getDocumentType().toString().contains(searchTerm) ||
-					i.getLocation().contains(searchTerm) ||
-					i.getReferenceNumber().contains(searchTerm) ||
-					i.getSummary().contains(searchTerm) ||
-					i.getTitle().contains(searchTerm))
+		for (Record i : records.values()) {
+			if (i.toString().contains(searchTerm))
 				arr.add(i);
 		}
 		return arr.toArray(new Record[0]);
@@ -135,7 +120,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByReferenceNum(String referenceNumber) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getReferenceNumber().contains(referenceNumber)) {
 				arr.add(i);
 			}
@@ -146,7 +131,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByTitle(String title) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getTitle().contains(title)) {
 				arr.add(i);
 			}
@@ -157,7 +142,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByRecordType(RecordType recordType) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getDocumentType().equals(recordType)) {
 				arr.add(i);
 			}
@@ -168,7 +153,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByAuthorFirstName(String author) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getAuthorFirstName().contains(author)) {
 				arr.add(i);
 			}
@@ -179,7 +164,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByAuthorLastName(String author) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getAuthorLastName().contains(author)) {
 				arr.add(i);
 			}
@@ -190,7 +175,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByDate(String date) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getDate().contains(date)) {
 				arr.add(i);
 			}
@@ -201,7 +186,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsByCategory(String category) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getCategory().contains(category)) {
 				arr.add(i);
 			}
@@ -212,7 +197,7 @@ public class CsvDataAccessor implements DataAccessor {
 	@Override
 	public Record[] getRecordsBySummary(String summary) {
 		List<Record> arr = new ArrayList<>();
-		for (Record i : records) {
+		for (Record i : records.values()) {
 			if (i.getSummary().contains(summary)) {
 				arr.add(i);
 			}
