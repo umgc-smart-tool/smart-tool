@@ -20,13 +20,18 @@ class ModifyRecordCardPanel extends RecordCardPanel {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     ModifyRecordCardPanel(CardView cardView, Record currentRecord) {
+        this(cardView, currentRecord, false);
+    }
+
+    ModifyRecordCardPanel(CardView cardView, Record currentRecord, boolean isFromResults) {
         super(cardView, currentRecord);
         enableReturnButton(false);
         setSaveButton(
                 new JButton("Save Changes"),
                 e -> {
                     saveModifications(cardView, currentRecord);
-                    cardView.setPanel(new ViewRecordCardPanel(cardView, currentRecord));
+                    cardView.setPanel(new ViewRecordCardPanel(cardView,
+                            cardView.dataAccessor.get(currentRecord.getReferenceNumber()), isFromResults));
                 });
         enableModifyFields();
     }

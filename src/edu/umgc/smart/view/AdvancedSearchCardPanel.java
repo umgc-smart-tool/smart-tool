@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
+import edu.umgc.smart.model.*;
 
 /**
  * Advanced Search Card Panel.
@@ -79,8 +80,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty()) {
       showSearchError(fieldNames[index]);
     } else {
-      Record[] records = cardView.dataAccessor.getRecordsByReferenceNum(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new ReferenceNumberSearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -90,8 +90,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsByTitle(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new TitleSearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -102,9 +101,8 @@ class AdvancedSearchCardPanel extends CardPanel {
       showSearchError(fieldNames[index]);
     else {
       try {
-        RecordType type = RecordType.valueOf(searchFields[index].getText().toUpperCase(Locale.ROOT));
-        Record[] records = cardView.dataAccessor.getRecordsByRecordType(type);
-        cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[2].getText(), fieldNames[index]));
+        RecordType.valueOf(searchFields[index].getText().toUpperCase(Locale.ROOT));
+        cardView.setPanel(new ResultsCardPanel(cardView, new TypeSearch(cardView.dataAccessor, searchFields[index].getText())));
       } catch (IllegalArgumentException error) {
         JOptionPane.showMessageDialog(null,
             "Please search for a valid Record Type: \n" +
@@ -120,8 +118,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsByAuthorLastName(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new LastNameSearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -131,8 +128,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsByAuthorFirstName(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new FirstNameSearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -142,8 +138,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsByDate(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new DateSearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -153,8 +148,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[index].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsByCategory(searchFields[index].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[index].getText(), fieldNames[index]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new CategorySearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 
@@ -164,8 +158,7 @@ class AdvancedSearchCardPanel extends CardPanel {
     if (searchFields[7].getText().isEmpty())
       showSearchError(fieldNames[index]);
     else {
-      Record[] records = cardView.dataAccessor.getRecordsBySummary(searchFields[7].getText());
-      cardView.setPanel(new ResultsCardPanel(cardView, records, searchFields[7].getText(), fieldNames[7]));
+      cardView.setPanel(new ResultsCardPanel(cardView, new SummarySearch(cardView.dataAccessor, searchFields[index].getText())));
     }
   }
 

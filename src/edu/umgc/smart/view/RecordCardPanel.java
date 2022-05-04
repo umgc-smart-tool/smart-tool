@@ -28,17 +28,18 @@ abstract class RecordCardPanel extends CardPanel {
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   private static final String[] fieldNames = Record.getHeaders().split(",");
 
-  private CardView cardView;
-  private Record currentRecord;
+  private final JButton deleteButton = new JButton("Delete");
+  private final JButton mainMenuButton = new JButton("Main Menu Search");
+  private final JButton backToResultsButton = new JButton("Return to Results");
+  private final JLabel[] fieldLabels = new JLabel[fieldNames.length];
+  private final JTextField[] textFields = new JTextField[fieldNames.length];
+  private final JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
+  private final GridBagConstraints constraints = new GridBagConstraints();
 
   private JButton activeSaveButton = new JButton("SAVE");
-  private JButton deleteButton = new JButton("Delete");
-  private JButton mainMenuButton = new JButton("Main Menu Search");
-  private JButton backToResultsButton = new JButton("Return to Results");
-  private JLabel[] fieldLabels = new JLabel[fieldNames.length];
-  private JTextField[] textFields = new JTextField[fieldNames.length];
-  private JComboBox<RecordType> recordTypeComboBox = new JComboBox<>(RecordType.values());
-  private GridBagConstraints constraints = new GridBagConstraints();
+  private CardView cardView;
+  private Record currentRecord;
+  private boolean isFromResults = false;
 
   RecordCardPanel(CardView cardView) {
     this.cardView = cardView;
@@ -74,18 +75,26 @@ abstract class RecordCardPanel extends CardPanel {
     setButtonAction(deleteButton, e -> {
       int deleteOption = JOptionPane.showConfirmDialog(null,
           "Are you sure you want to delete this record?");
-      if (deleteOption == JOptionPane.YES_OPTION) {
-        LOGGER.info("Delete confirmed");
-        cardView.dataAccessor.delete(currentRecord);
-        cardView.setPanel(new SearchCardPanel(cardView));
-      } else {
-        LOGGER.info("Delete cancelled");
-      }
+      deleteRecord(deleteOption);
     });
     setButtonAction(backToResultsButton, e -> {
       LOGGER.info("Back to results button pressed");
       cardView.setPanel(new ResultsCardPanel(cardView));
     });
+  }
+
+  private void deleteRecord(int deleteOption) {
+    if (deleteOption == JOptionPane.YES_OPTION) {
+      LOGGER.info("Delete confirmed");
+      cardView.dataAccessor.delete(currentRecord);
+      if (isFromResults) {
+        cardView.setPanel(new ResultsCardPanel(cardView));
+      } else {
+        cardView.setPanel(new SearchCardPanel(cardView));
+      }
+    } else {
+      LOGGER.info("Delete cancelled");
+    }
   }
 
   void setSaveButton(JButton button, ActionListener actionListener) {
@@ -189,6 +198,14 @@ abstract class RecordCardPanel extends CardPanel {
       input[i] = textFields[i].getText();
     }
     return input;
+  }
+
+  public boolean isFromResults() {
+    return isFromResults;
+  }
+
+  void setFromResults(boolean isFromResults) {
+    this.isFromResults = isFromResults;
   }
 
   public abstract String getName();
