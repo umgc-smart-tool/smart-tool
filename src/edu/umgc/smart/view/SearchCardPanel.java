@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import edu.umgc.smart.model.Record;
+import edu.umgc.smart.model.MainSearch;
 
 /**
  * Search Card Panel
@@ -45,9 +45,7 @@ public class SearchCardPanel extends CardPanel {
           JOptionPane.showMessageDialog(null, "Please enter a valid search term.",
                   "Invalid Search", JOptionPane.ERROR_MESSAGE);
         } else {
-          Record[] records = cardView.dataAccessor.getRecordsByMainSearch(searchBoxField.getText());
-          cardView.setPanel(new ResultsCardPanel(cardView, records, searchBoxField.getText(),
-                  "All Fields"));
+          cardView.setPanel(new ResultsCardPanel(cardView, new MainSearch(cardView.dataAccessor, searchBoxField.getText())));
         }
     };
 
