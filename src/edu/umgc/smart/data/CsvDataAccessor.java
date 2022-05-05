@@ -2,6 +2,7 @@ package edu.umgc.smart.data;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
@@ -24,6 +26,7 @@ import edu.umgc.smart.model.RecordType;
 public class CsvDataAccessor implements DataAccessor {
 	private static final long serialVersionUID = 1564806799199445630L;
 
+  private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String RECORDS_CSV = "Records.csv";
 
 	private final Map<String, Record> records = new HashMap<>();
@@ -36,8 +39,11 @@ public class CsvDataAccessor implements DataAccessor {
 		try (BufferedReader br = new BufferedReader(new FileReader(RECORDS_CSV))) {
 			parseRecordsFromFile(br);
 		}
+		catch (FileNotFoundException e) {
+			LOGGER.warning("No Records.csv file currently exists. Proceeding without loading data.");
+		}
 		catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.warning("Failed to read CSV file, Records.csv. Proceeding without loading data.");
 		}
 	}
 

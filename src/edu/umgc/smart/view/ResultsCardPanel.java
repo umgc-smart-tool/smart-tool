@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import edu.umgc.smart.model.MainSearch;
 import edu.umgc.smart.model.Record;
@@ -159,14 +161,19 @@ class ResultsCardPanel extends CardPanel {
     private void addResultsWithLoop(JPanel resultsPanel) {
         for (int i = 0; i < records.length; i++) {
             JPanel recordPanel = new JPanel();
-            recordPanel.setLayout(new GridLayout(1, 4));
+            recordPanel.setLayout(new BorderLayout(20,0));
+            JPanel centerPanel = new JPanel(); // Inner panel, used to vary size of columns
+            centerPanel.setLayout(new BorderLayout(20,0));
             recordPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             selectButtons[i].setBorderPainted(false);
             selectButtons[i].setForeground(Color.gray);
-            recordPanel.add(selectButtons[i]);
-            recordPanel.add(new JLabel(records[i].getReferenceNumber()));
-            recordPanel.add(new JLabel(records[i].getTitle()));
-            recordPanel.add(new JLabel(records[i].getDate()));
+            recordPanel.add(selectButtons[i], BorderLayout.WEST);
+            centerPanel.add(new JLabel(records[i].getReferenceNumber()), BorderLayout.WEST);
+            centerPanel.add(new JLabel(records[i].getTitle()), BorderLayout.CENTER);
+            recordPanel.add(centerPanel, BorderLayout.CENTER);
+            JLabel date = new JLabel(records[i].getDate());
+            date.setBorder(new EmptyBorder(0,0,0,10));
+            recordPanel.add(date, BorderLayout.EAST);
             resultsPanel.add(recordPanel);
         }
     }
