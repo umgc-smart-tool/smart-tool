@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -16,9 +18,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.umgc.smart.model.CategorySearch;
+import edu.umgc.smart.model.DateSearch;
+import edu.umgc.smart.model.FirstNameSearch;
+import edu.umgc.smart.model.LastNameSearch;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
-import edu.umgc.smart.model.*;
+import edu.umgc.smart.model.ReferenceNumberSearch;
+import edu.umgc.smart.model.SummarySearch;
+import edu.umgc.smart.model.TitleSearch;
+import edu.umgc.smart.model.TypeSearch;
 
 /**
  * Advanced Search Card Panel.
@@ -71,6 +80,14 @@ class AdvancedSearchCardPanel extends CardPanel {
     searchButtons[5].addActionListener(e -> searchByDate(5));
     searchButtons[6].addActionListener(e -> searchByCategory(6));
     searchButtons[7].addActionListener(e -> searchBySummary(7));
+    searchFields[0].addActionListener(e -> searchByReferenceNumber(0));
+    searchFields[1].addActionListener(e -> searchByTitle(1));
+    searchFields[2].addActionListener(e -> searchByRecordType(2));
+    searchFields[3].addActionListener(e -> searchByAuthorLastName(3));
+    searchFields[4].addActionListener(e -> searchByAuthorFirstName(4));
+    searchFields[5].addActionListener(e -> searchByDate(5));
+    searchFields[6].addActionListener(e -> searchByCategory(6));
+    searchFields[7].addActionListener(e -> searchBySummary(7));
     mainSearchButton.addActionListener(e -> cardView.setPanel(new SearchCardPanel(cardView)));
   }
 

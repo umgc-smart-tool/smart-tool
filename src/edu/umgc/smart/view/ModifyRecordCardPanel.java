@@ -26,6 +26,7 @@ class ModifyRecordCardPanel extends RecordCardPanel {
     ModifyRecordCardPanel(CardView cardView, Record currentRecord, boolean isFromResults) {
         super(cardView, currentRecord);
         enableReturnButton(false);
+        setDateField();
         setSaveButton(
                 new JButton("Save Changes"),
                 e -> {
@@ -54,7 +55,7 @@ class ModifyRecordCardPanel extends RecordCardPanel {
             cardView.dataAccessor.update(currentRecord.getReferenceNumber(), updatedRecord);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Reference Number is not valid",
+                    "Unable to modify Record.",
                     "Invalid Record",
                     JOptionPane.ERROR_MESSAGE);
         }

@@ -21,6 +21,7 @@ class CreateRecordCardPanel extends RecordCardPanel {
     CreateRecordCardPanel(CardView cardView) {
         super(cardView);
         enableReturnButton(false);
+        setDateField();
         setSaveButton(
                 new JButton("Save"),
                 e -> saveRecord(cardView));
@@ -44,7 +45,7 @@ class CreateRecordCardPanel extends RecordCardPanel {
             saveNewRecordIfHasUniqueReferenceNumber(cardView, newRecord);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Reference Number is not valid",
+                    "Unable to create new Record.",
                     "Invalid Record",
                     JOptionPane.ERROR_MESSAGE);
         }

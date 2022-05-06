@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
+import java.time.LocalDate;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -14,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import edu.umgc.smart.model.InputValidator;
+import edu.umgc.smart.model.InvalidInputException;
 import edu.umgc.smart.model.Record;
 import edu.umgc.smart.model.RecordType;
 
@@ -152,6 +155,13 @@ abstract class RecordCardPanel extends CardPanel {
     }
   }
 
+  void setDateField() {
+    // Set the date field for records to be created
+    textFields[5].setEditable(false);
+    textFields[5].setBackground(Color.LIGHT_GRAY);
+    textFields[5].setText(String.valueOf(LocalDate.now()));
+  }
+
   void enableModifyFields() {
     for (int i = 0; i < fieldNames.length; i++) {
       textFields[i].setEditable(true);
@@ -177,17 +187,20 @@ abstract class RecordCardPanel extends CardPanel {
 
   Record buildRecord() {
     String[] input = extractInputData();
-    if (InputValidator.isValidReferenceNumber(input[0])) {
+    try {
+      InputValidator.validateAllFields(input); // Validate all fields
       return new Record.Builder(input[0])
-          .title(input[1])
-          .type(input[2])
-          .lastName(input[3])
-          .firstName(input[4])
-          .date(input[5])
-          .category(input[6])
-          .summary(input[7])
-          .location(input[8])
-          .build();
+              .title(input[1])
+              .type(input[2])
+              .lastName(input[3])
+              .firstName(input[4])
+              .date(input[5])
+              .category(input[6])
+              .summary(input[7])
+              .location(input[8])
+              .build();
+    } catch (InvalidInputException err){
+      JOptionPane.showMessageDialog(this, err.getMessage(), "Record Modify/Create Error", JOptionPane.ERROR_MESSAGE);
     }
     return null;
   }
