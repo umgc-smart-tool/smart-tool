@@ -44,6 +44,35 @@ public final class InputValidator {
     return input.length() < 501;
   }
 
-
-
+  public static boolean validateAllFields(String[] input) throws InvalidInputException {
+    // Validate all input fields, throw InvalidInputException upon validation fail
+    if (!isValidReferenceNumber(input[0])){
+      throw new InvalidInputException("Invalid Reference Number Format.");
+    }
+    else if (input[1].isEmpty()){
+      throw new InvalidInputException("Invalid Title.");
+    }
+    else if (!isValidRecordType(input[2])){
+      throw new InvalidInputException("Invalid Record Type.");
+    }
+    else if (input[3].isEmpty() || !isValidName(input[3])){
+      throw new InvalidInputException("Invalid Last Name.");
+    }
+    else if (input[4].isEmpty() || !isValidName(input[4])){
+      throw new InvalidInputException("Invalid First Name.");
+    }
+    else if (!isValidDate(input[5])){
+      throw new InvalidInputException("Invalid Date.");
+    }
+    else if (input[6].isEmpty()){
+      throw new InvalidInputException("Invalid Category.");
+    }
+    else if (input[7].isEmpty() || !isValidSummaryLength(input[7])){
+      throw new InvalidInputException("Invalid Summary Length.");
+    }
+    else if (input[8].isEmpty()){
+      throw new InvalidInputException("Invalid Location.");
+    }
+    return true;
+  }
 }
