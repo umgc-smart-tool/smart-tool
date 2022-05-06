@@ -26,6 +26,7 @@ class ModifyRecordCardPanel extends RecordCardPanel {
     ModifyRecordCardPanel(CardView cardView, Record currentRecord, boolean isFromResults) {
         super(cardView, currentRecord);
         enableReturnButton(false);
+        setDateField();
         setSaveButton(
                 new JButton("Save Changes"),
                 e -> {
