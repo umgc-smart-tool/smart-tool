@@ -81,7 +81,7 @@ https://github.com/umgc-smart-tool/smart-tool/releases/latest
 
 ## Need More?
 
-Please refer to the SMART Project Final Report (SMART_Project_Final_Report.pdf) for further information about the project.
+Please refer to the SMART Project Final Report (SMART_Project_Final_Report.docx) for further information about the project.
 
 -----
 
